@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ThinkBridge - 思维框架教练</title>
+<meta name="description" content="ThinkBridge AI思维框架教练，帮助你用结构化思维分析问题">
+<meta name="theme-color" content="#C5A059">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ThinkBridge">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSIyNCIgZmlsbD0iI0ZBRjhGNSIvPjx0ZXh0IHg9Ijk2IiB5PSIxMTAiIGZvbnQtc2l6ZT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNDNUEwNTkiIGZvbnQtZmFtaWx5PSJzZXJpZiI+5YikPC90ZXh0Pjwvc3ZnPg==">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiVGhpbmtCcmlkZ2UiLCJzaG9ydF9uYW1lIjoiVGhpbmtCcmlkZ2UiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0ZBRjhGNSIsInRoZW1lX2NvbG9yIjoiI0M1QTA1OSIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIyYVdWM1FtOTRQU0l3SURBZ01UQXdJREV3TUNJZ2VHMXNibk05SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpJd01EQXZjM1puSWo0OFkybHlZMnhsSUdONFBTSTJOQ0lnWTNrOUlqVXdJaUJ5UFNJME9DSWdabWxzYkQwaUl6aGlOV05tTmlJdlBqeDBaWGgwSUhnOUlqVXdJaUI1UFNJMU9DSWdabTl1ZEMxemFYcGxQU0l6TUNJZ1ptbHNiRDBpZDJocGRHVWlJSFJsZUhRdFlXNWphRzl5UFNKdGFXUmtiR1VpSUdadmJuUXRkMlZwWjJoMFBTSTVNREFpUGt4Q1BDOTBaWGgwUGp3dmMzWm5QZz09Iiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        sand: '#FAF8F5',
+        'sand-deep': '#F3EFEA',
+        ore: '#43300E',
+        'ore-dark': '#2C2A27',
+        gold: '#C5A059',
+        'gold-light': '#E8D5A8',
+        'gold-dark': '#B48F40',
+        'gold-pale': '#F5EFE0',
+      },
+      fontFamily: {
+        serif: ['"Noto Serif SC"', 'serif'],
+        sans: ['"Noto Sans SC"', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+<style>
+  [x-cloak] { display: none !important; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: #FAF8F5;
+    color: #43300E;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+  .font-serif { font-family: 'Noto Serif SC', serif; }
+
+  /* Glassmorphism Nav */
+  .glass-nav {
+    background: rgba(250, 248, 245, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+  }
+
+  /* Neumorphism */
+  .neu-card {
+    background: #FAF8F5;
+    box-shadow: 5px 5px 12px rgba(67, 48, 14, 0.08), -3px -3px 8px rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .neu-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 6px 8px 18px rgba(67, 48, 14, 0.12), -4px -4px 12px rgba(255, 255, 255, 0.95);
+  }
+  .neu-input {
+    background: #FAF8F5;
+    box-shadow: inset 3px 3px 6px rgba(67, 48, 14, 0.07), inset -2px -2px 5px rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(197, 160, 89, 0.15);
+    border-radius: 12px;
+  }
+  .neu-input:focus {
+    border-color: rgba(197, 160, 89, 0.4);
+    box-shadow: inset 3px 3px 6px rgba(67, 48, 14, 0.07), inset -2px -2px 5px rgba(255, 255, 255, 0.85), 0 0 0 3px rgba(197, 160, 89, 0.1);
+  }
+  .neu-btn {
+    background: linear-gradient(135deg, #C5A059, #B48F40);
+    box-shadow: 3px 3px 8px rgba(67, 48, 14, 0.15), -2px -2px 6px rgba(255, 255, 255, 0.7);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+  .neu-btn:hover {
+    box-shadow: 4px 4px 12px rgba(67, 48, 14, 0.2), -3px -3px 8px rgba(255, 255, 255, 0.8);
+    transform: translateY(-1px);
+  }
+  .neu-btn:active {
+    transform: translateY(0);
+    box-shadow: inset 2px 2px 4px rgba(67, 48, 14, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.3);
+  }
+  .neu-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Tab styles */
+  .tab-active {
+    color: #C5A059;
+    border-bottom: 2px solid #C5A059;
+  }
+  .tab-inactive {
+    color: #8B7355;
+    border-bottom: 2px solid transparent;
+  }
+  .tab-inactive:hover {
+    color: #B48F40;
+  }
+
+  /* Category filter tabs */
+  .cat-tab {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    background: transparent;
+    color: #8B7355;
+    cursor: pointer;
+  }
+  .cat-tab.active {
+    background: linear-gradient(135deg, #C5A059, #B48F40);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 2px 2px 8px rgba(197, 160, 89, 0.3);
+  }
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Mode toggle */
+  .mode-active {
+    background: linear-gradient(135deg, #C5A059, #B48F40);
+    color: #fff;
+    box-shadow: 2px 2px 8px rgba(197, 160, 89, 0.3);
+  }
+  .mode-inactive {
+    background: #F3EFEA;
+    color: #8B7355;
+  }
+
+  /* Report area */
+  .report-area {
+    max-height: 60vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+  .report-area h1 { font-size: 1.25rem; font-weight: 700; margin: 1rem 0 0.5rem; font-family: 'Noto Serif SC', serif; color: #43300E; }
+  .report-area h2 { font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem; font-family: 'Noto Serif SC', serif; color: #43300E; }
+  .report-area h3 { font-size: 1rem; font-weight: 600; margin: 0.75rem 0 0.4rem; color: #43300E; }
+  .report-area p { margin: 0.4rem 0; line-height: 1.7; }
+  .report-area ul, .report-area ol { margin: 0.4rem 0; padding-left: 1.5rem; }
+  .report-area li { margin: 0.2rem 0; line-height: 1.6; }
+  .report-area blockquote { border-left: 3px solid #C5A059; padding-left: 0.75rem; margin: 0.5rem 0; color: #8B7355; }
+  .report-area strong { color: #43300E; }
+  .report-area code { background: #F3EFEA; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.9em; }
+  .report-area hr { border: none; border-top: 1px solid rgba(197, 160, 89, 0.2); margin: 1rem 0; }
+
+  /* Category badges */
+  .badge-数字估算类 { background: #E8D5A8; color: #7A5C1E; }
+  .badge-根因分析类 { background: #F0D5D5; color: #8B3A3A; }
+  .badge-决策类 { background: #D5E8D0; color: #3A6B35; }
+  .badge-系统思维类 { background: #D5D8E8; color: #3A3F6B; }
+  .badge-创新突破类 { background: #F5E6C8; color: #8B6914; }
+  .badge-人际自我类 { background: #E5D5F0; color: #6B3A8B; }
+  .badge-中式思维类 { background: #F0DDD5; color: #8B4A3A; }
+  .badge-不可预见类 { background: #E0DDD8; color: #5A5550; }
+
+  /* Animations */
+  @keyframes pulse-gold {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+  .pulse-gold { animation: pulse-gold 2s ease-in-out infinite; }
+
+  @keyframes breathe {
+    0%, 100% { r: 3.5; opacity: 0.9; }
+    50% { r: 5; opacity: 1; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeIn 0.3s ease-out; }
+
+  @keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes slideOutRight {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+  }
+
+  /* Drawer */
+  .drawer-overlay {
+    background: rgba(44, 42, 39, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease;
+  }
+  .drawer-panel {
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .drawer-panel.open {
+    transform: translateX(0);
+  }
+
+  /* Chat bubbles */
+  .chat-bubble-user {
+    background: linear-gradient(135deg, #C5A059, #B48F40);
+    color: #fff;
+    border-radius: 16px 16px 4px 16px;
+    max-width: 80%;
+    margin-left: auto;
+  }
+  .chat-bubble-ai {
+    background: #F3EFEA;
+    color: #43300E;
+    border-radius: 16px 16px 16px 4px;
+    max-width: 80%;
+  }
+
+  /* Card grid */
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 640px) {
+    .framework-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  textarea:focus, input:focus { outline: none; }
+
+  /* Scrollbar styling */
+  .drawer-scroll::-webkit-scrollbar { width: 4px; }
+  .drawer-scroll::-webkit-scrollbar-track { background: transparent; }
+  .drawer-scroll::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.3); border-radius: 2px; }
+
+  .chat-scroll::-webkit-scrollbar { width: 3px; }
+  .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+  .chat-scroll::-webkit-scrollbar-thumb { background: rgba(197, 160, 89, 0.25); border-radius: 2px; }
+</style>
+</head>
+<body class="min-h-screen bg-sand">
+
+<div x-data="app()" x-init="init()" class="min-h-screen flex flex-col">
+
+  <!-- Error Toast -->
+  <div x-show="errorMessage" x-transition class="fixed top-20 left-4 right-4 z-50 max-w-lg mx-auto bg-white border border-gold-light rounded-2xl px-4 py-3 text-sm fade-in shadow-lg" x-cloak>
+    <span class="text-ore" x-text="errorMessage"></span>
+  </div>
+
+  <!-- Offline Banner -->
+  <div x-show="!isOnline" class="bg-ore-dark text-gold-light text-center text-xs py-1.5 px-4" x-cloak>
+    📡 当前离线，分析功能不可用，框架库和历史记录仍可使用
+  </div>
+
+  <!-- Glassmorphism Navigation -->
+  <header class="glass-nav fixed top-0 left-0 right-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-14">
+        <!-- Logo + Title -->
+        <div class="flex items-center gap-3">
+          <!-- Brain SVG Logo -->
+          <svg width="36" height="36" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="brainGrad" x1="0" y1="0" x2="64" y2="64">
+                <stop offset="0%" stop-color="#C5A059"/>
+                <stop offset="100%" stop-color="#B48F40"/>
+              </linearGradient>
+            </defs>
+            <!-- Brain outline - left hemisphere -->
+            <path d="M32 8 C28 8, 22 10, 18 14 C14 18, 12 23, 12 28 C10 30, 8 34, 9 38 C8 42, 10 46, 14 48 C14 52, 17 55, 22 56 C24 58, 28 58, 32 56" stroke="url(#brainGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Brain outline - right hemisphere -->
+            <path d="M32 8 C36 8, 42 10, 46 14 C50 18, 52 23, 52 28 C54 30, 56 34, 55 38 C56 42, 54 46, 50 48 C50 52, 47 55, 42 56 C40 58, 36 58, 32 56" stroke="url(#brainGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <!-- Center line -->
+            <path d="M32 8 L32 56" stroke="url(#brainGrad)" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.4"/>
+            <!-- Neural synapse nodes -->
+            <circle cx="22" cy="20" r="2.5" fill="#C5A059" opacity="0.85"/>
+            <circle cx="42" cy="20" r="2.5" fill="#C5A059" opacity="0.85"/>
+            <circle cx="18" cy="34" r="2.5" fill="#C5A059" opacity="0.85"/>
+            <circle cx="46" cy="34" r="2.5" fill="#C5A059" opacity="0.85"/>
+            <circle cx="24" cy="46" r="2.5" fill="#C5A059" opacity="0.85"/>
+            <circle cx="40" cy="46" r="2.5" fill="#C5A059" opacity="0.85"/>
+            <!-- Connecting lines -->
+            <line x1="22" y1="20" x2="42" y2="20" stroke="#C5A059" stroke-width="0.8" opacity="0.35"/>
+            <line x1="22" y1="20" x2="18" y2="34" stroke="#C5A059" stroke-width="0.8" opacity="0.35"/>
+            <line x1="42" y1="20" x2="46" y2="34" stroke="#C5A059" stroke-width="0.8" opacity="0.35"/>
+            <line x1="18" y1="34" x2="24" y2="46" stroke="#C5A059" stroke-width="0.8" opacity="0.35"/>
+            <line x1="46" y1="34" x2="40" y2="46" stroke="#C5A059" stroke-width="0.8" opacity="0.35"/>
+            <line x1="22" y1="20" x2="32" y2="32" stroke="#C5A059" stroke-width="0.8" opacity="0.25"/>
+            <line x1="42" y1="20" x2="32" y2="32" stroke="#C5A059" stroke-width="0.8" opacity="0.25"/>
+            <line x1="18" y1="34" x2="32" y2="32" stroke="#C5A059" stroke-width="0.8" opacity="0.25"/>
+            <line x1="46" y1="34" x2="32" y2="32" stroke="#C5A059" stroke-width="0.8" opacity="0.25"/>
+            <line x1="24" y1="46" x2="32" y2="50" stroke="#C5A059" stroke-width="0.8" opacity="0.25"/>
+            <line x1="40" y1="46" x2="32" y2="50" stroke="#C5A059" stroke-width="0.8" opacity="0.25"/>
+            <!-- Pulsing spark node at center bottom -->
+            <circle cx="32" cy="50" r="3.5" fill="#C5A059" opacity="0.9">
+              <animate attributeName="r" values="3.5;5;3.5" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+          <div>
+            <h1 class="font-serif text-lg font-bold tracking-wide text-ore">ThinkBridge</h1>
+            <p class="text-[10px] text-gold-dark -mt-0.5">思维框架教练</p>
+          </div>
+        </div>
+        <!-- Settings + Tab Nav -->
+        <div class="flex items-center gap-1">
+          <button @click="currentPage = 'analyze'" class="px-3 py-1.5 text-sm font-medium transition-colors" :class="currentPage === 'analyze' ? 'tab-active' : 'tab-inactive'">分析</button>
+          <button @click="currentPage = 'library'" class="px-3 py-1.5 text-sm font-medium transition-colors" :class="currentPage === 'library' ? 'tab-active' : 'tab-inactive'">框架库</button>
+          <button @click="currentPage = 'history'" class="px-3 py-1.5 text-sm font-medium transition-colors" :class="currentPage === 'history' ? 'tab-active' : 'tab-inactive'">历史</button>
+          <button @click="showSettings = !showSettings" class="ml-2 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gold-pale transition-colors" :class="showSettings ? 'bg-gold-pale' : ''">
+            <svg class="w-4.5 h-4.5 text-gold-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div x-show="showSettings" x-transition class="max-w-5xl mx-auto px-4 sm:px-6 pb-4 fade-in" x-cloak>
+      <div class="bg-white/70 backdrop-blur rounded-2xl p-4 border border-gold-light/30">
+        <label class="block text-xs text-ore-dark font-medium mb-1.5">DeepSeek API Key</label>
+        <div class="flex gap-2">
+          <input x-model="apiKey" @blur="saveApiKey()" :type="showApiKey ? 'text' : 'password'" placeholder="sk-..." class="flex-1 neu-input px-3 py-2 text-sm text-ore placeholder-gray-400">
+          <button @click="showApiKey = !showApiKey" class="px-2 text-gold-dark hover:text-gold text-xs">👁</button>
+        </div>
+        <div class="mt-3">
+          <label class="block text-xs text-ore-dark font-medium mb-1.5">API 代理地址</label>
+          <input x-model="apiBaseUrl" @blur="saveSettings()" placeholder="https://api.deepseek.com" class="w-full neu-input px-3 py-2 text-sm text-ore placeholder-gray-400">
+          <p class="text-xs text-gray-400 mt-1">如果浏览器直连 DeepSeek 出现连接错误，可填入 Cloudflare Worker 代理地址</p>
+        </div>
+        <div class="mt-3 pt-3 border-t border-gold-light/20">
+          <p class="text-xs text-ore-dark font-medium mb-1.5">🔒 隐私说明</p>
+          <ul class="text-xs text-gray-500 space-y-1">
+            <li>• API Key 保存在你的本地浏览器</li>
+            <li>• 历史记录保存在你的本地浏览器</li>
+            <li>• 你的问题会发送给 DeepSeek API 用于生成回答</li>
+            <li>• 请避免输入身份证、银行卡、精确住址等敏感信息</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 pt-16 pb-6">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+
+      <!-- ===== ANALYZE PAGE ===== -->
+      <div x-show="currentPage === 'analyze'" x-transition class="fade-in">
+        <div class="max-w-2xl mx-auto">
+
+          <!-- Mode Toggle -->
+          <div class="flex gap-2 mb-5">
+            <button @click="setMode('learning')" class="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all" :class="mode === 'learning' ? 'mode-active' : 'mode-inactive'">📖 学习模式</button>
+            <button @click="setMode('quick')" class="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all" :class="mode === 'quick' ? 'mode-active' : 'mode-inactive'">⚡ 快速分析</button>
+          </div>
+
+          <!-- Input Area -->
+          <div class="neu-card p-5 mb-5">
+            <textarea x-model="question" rows="4" :disabled="isAnalyzing" placeholder="描述你正在思考问题...&#10;&#10;例如：我该不该从大厂辞职去创业？&#10;例如：为什么团队总是完不成目标？&#10;例如：要不要回老家发展？" class="w-full bg-transparent text-sm leading-relaxed resize-none placeholder-gray-400 text-ore"></textarea>
+            <div class="flex items-center justify-between mt-3">
+              <span class="text-xs text-gray-400" x-text="question.length + ' 字'"></span>
+              <button @click="analyze()" :disabled="isAnalyzing || !isOnline" class="neu-btn px-6 py-2.5 text-sm font-medium">
+                <span x-show="!isAnalyzing">开始分析</span>
+                <span x-show="isAnalyzing" class="flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 bg-white rounded-full pulse-gold"></span>
+                  分析中
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Indicator -->
+          <div x-show="isAnalyzing" class="mb-5 fade-in" x-cloak>
+            <div class="neu-card p-4">
+              <div class="flex items-center gap-3">
+                <div class="flex gap-1.5">
+                  <span class="w-2 h-2 rounded-full" :class="analyzeStep === 'routing' ? 'bg-gold pulse-gold' : (analyzeStep === 'analyzing' ? 'bg-green-500' : 'bg-gray-200')"></span>
+                  <span class="w-2 h-2 rounded-full" :class="analyzeStep === 'analyzing' ? 'bg-gold pulse-gold' : 'bg-gray-200'"></span>
+                </div>
+                <span class="text-sm text-ore-dark" x-text="analyzeStep === 'routing' ? '正在诊断问题类型...' : '正在深度分析...'"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clarification Questions -->
+          <div x-show="showClarification && clarifyingQuestions.length > 0" class="mb-5 fade-in" x-cloak>
+            <div class="bg-gold-pale rounded-2xl p-5 border border-gold-light/30">
+              <p class="text-sm font-medium text-ore mb-3">🤔 需要更多信息才能精准分析：</p>
+              <div class="space-y-3">
+                <template x-for="(q, i) in clarifyingQuestions" :key="i">
+                  <div>
+                    <p class="text-sm text-ore-dark font-medium mb-1.5" x-text="(i+1) + '. ' + q"></p>
+                    <input type="text" x-model="clarificationAnswers[i]" :placeholder="'请回答：' + q" class="w-full neu-input px-4 py-2.5 text-sm placeholder-gray-400 text-ore">
+                  </div>
+                </template>
+                <div class="pt-2 border-t border-gold-light/40">
+                  <p class="text-sm text-ore-dark font-medium mb-1.5">补充信息</p>
+                  <textarea x-model="additionalInfo" rows="2" placeholder="还有其他想补充的背景、目标或限制条件..." class="w-full neu-input px-4 py-2.5 text-sm placeholder-gray-400 text-ore resize-none"></textarea>
+                </div>
+              </div>
+              <div class="mt-4 flex justify-end">
+                <button @click="submitClarification()" class="px-5 py-2.5 rounded-xl text-sm font-medium text-white transition-all hover:shadow-md active:scale-[0.98]" style="background: linear-gradient(135deg, #C5A059, #B48F40);">
+                  补充并继续分析
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Report Output -->
+          <div x-show="reportHtml" class="fade-in" x-cloak>
+            <div class="neu-card p-5 mb-5" style="box-shadow: 6px 6px 16px rgba(67,48,14,0.1), -4px -4px 10px rgba(255,255,255,0.95);">
+              <div class="flex items-center justify-between mb-3">
+                <h2 class="font-serif text-base font-bold text-ore">分析报告</h2>
+                <div class="flex items-center gap-3">
+                  <button x-show="streamInterrupted" @click="analyze()" class="text-xs text-gold hover:text-gold-dark font-medium transition-colors">🔄 继续生成</button>
+                  <button @click="copyReport()" class="text-xs text-gold hover:text-gold-dark font-medium transition-colors">📋 复制</button>
+                </div>
+              </div>
+              <div class="report-area text-sm leading-relaxed text-ore-dark" x-html="reportHtml"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FRAMEWORK LIBRARY PAGE ===== -->
+      <div x-show="currentPage === 'library'" x-transition class="fade-in">
+
+        <!-- Search Bar + 全部 -->
+        <div class="flex gap-2 mb-4">
+          <div class="relative flex-1">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input x-model="librarySearch" placeholder="搜索框架..." class="w-full neu-input pl-11 pr-10 py-3 text-sm placeholder-gray-400 text-ore">
+            <button x-show="librarySearch.length > 0" @click="librarySearch = ''" class="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-gold-pale text-gold-dark hover:bg-gold-light transition-colors text-xs" x-cloak>✕</button>
+          </div>
+          <button @click="libraryCategory = '全部'" class="shrink-0 px-3 py-3 rounded-xl text-xs font-medium transition-all whitespace-nowrap" :class="libraryCategory === '全部' ? 'cat-tab active' : 'cat-tab'">全部</button>
+        </div>
+
+        <!-- Category Filter Tabs (两行) -->
+        <div class="flex flex-wrap gap-2 mb-5">
+          <template x-for="cat in categories.filter(c => c !== '全部')" :key="cat">
+            <button @click="libraryCategory = cat" class="cat-tab" :class="libraryCategory === cat ? 'active' : ''" x-text="cat"></button>
+          </template>
+        </div>
+
+        <!-- Framework Card Grid -->
+        <div class="framework-grid">
+          <template x-for="fw in filteredFrameworks" :key="fw.id">
+            <div class="neu-card p-5 flex flex-col">
+              <div class="flex items-center gap-2 mb-2 flex-wrap">
+                <span class="font-serif font-bold text-base text-ore" x-text="fw.name"></span>
+                <span class="text-xs px-2 py-0.5 rounded-full whitespace-nowrap shrink-0" :class="'badge-' + fw.category" x-text="fw.category"></span>
+              </div>
+              <p class="text-xs text-ore-dark leading-relaxed flex-1 mb-4" x-text="fw.summary"></p>
+              <button @click="viewFramework(fw)" class="w-full py-2 rounded-xl text-sm font-medium bg-gold-pale text-gold-dark hover:bg-gold hover:text-white transition-all">查看详情</button>
+            </div>
+          </template>
+        </div>
+
+        <div x-show="filteredFrameworks.length === 0" class="text-center py-16 text-gray-400 text-sm">
+          没有找到匹配的框架
+        </div>
+      </div>
+
+      <!-- ===== HISTORY PAGE ===== -->
+      <div x-show="currentPage === 'history'" x-transition class="fade-in">
+        <div class="max-w-2xl mx-auto">
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="font-serif text-lg font-bold text-ore">分析历史</h2>
+            <button x-show="history.length > 0" @click="clearHistory()" class="text-xs text-red-400 hover:text-red-600 font-medium transition-colors">清空</button>
+          </div>
+
+          <div x-show="history.length === 0" class="text-center py-20 text-gray-400 text-sm">
+            <p class="text-4xl mb-3">📭</p>
+            <p>还没有分析记录</p>
+          </div>
+
+          <div class="space-y-3">
+            <template x-for="item in history" :key="item.id">
+              <div @click="viewHistory(item)" class="neu-card p-4 cursor-pointer">
+                <div class="flex items-start justify-between">
+                  <div class="flex-1 min-w-0">
+                    <p class="text-xs text-gray-400 mb-1" x-text="item.date"></p>
+                    <p class="text-sm text-ore font-medium truncate" x-text="item.question"></p>
+                    <div class="flex flex-wrap gap-1 mt-2">
+                      <template x-for="tag in item.frameworks" :key="tag">
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-gold-pale text-gold-dark" x-text="tag"></span>
+                      </template>
+                    </div>
+                  </div>
+                  <button @click.stop="deleteHistory(item.id)" class="ml-2 shrink-0 w-7 h-7 flex items-center justify-center rounded-lg hover:bg-red-50 text-gray-300 hover:text-red-400 transition-colors text-xs">✕</button>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-3 text-xs text-gray-400">
+    ThinkBridge · 你的数据仅存储在本地
+  </footer>
+
+  <!-- ===== RIGHT SIDE DRAWER: Framework Detail ===== -->
+  <div x-show="showFrameworkDetail && selectedFramework" class="fixed inset-0 z-40" x-cloak>
+    <!-- Overlay -->
+    <div class="drawer-overlay absolute inset-0" @click="closeDrawer()"></div>
+    <!-- Drawer Panel -->
+    <div class="drawer-panel absolute top-0 right-0 h-full w-full max-w-md bg-sand shadow-2xl flex flex-col" :class="showFrameworkDetail ? 'open' : ''">
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between px-5 py-4 border-b border-gold-light/20">
+        <div class="flex items-center gap-3">
+          <h2 class="font-serif text-lg font-bold text-ore" x-text="selectedFramework?.name"></h2>
+          <span class="text-xs px-2 py-0.5 rounded-full" :class="'badge-' + selectedFramework?.category" x-text="selectedFramework?.category"></span>
+        </div>
+        <button @click="closeDrawer()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gold-pale text-gray-400 transition-colors">✕</button>
+      </div>
+
+      <!-- Drawer Content -->
+      <div class="flex-1 overflow-y-auto drawer-scroll px-5 py-4 space-y-5">
+        <div>
+          <h3 class="font-semibold text-ore mb-1.5 text-sm flex items-center gap-1.5">🎯 解决什么问题</h3>
+          <p class="text-sm text-ore-dark leading-relaxed" x-text="selectedFramework?.solves"></p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-ore mb-1.5 text-sm flex items-center gap-1.5">📋 思考顺序</h3>
+          <ol class="space-y-2">
+            <template x-for="(step, i) in selectedFramework?.thinking_order" :key="i">
+              <li class="flex gap-3 items-start text-sm text-ore-dark">
+                <span class="shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-gold text-white text-xs font-medium" x-text="i+1"></span>
+                <span class="pt-0.5" x-text="step"></span>
+              </li>
+            </template>
+          </ol>
+        </div>
+        <div>
+          <h3 class="font-semibold text-ore mb-1.5 text-sm flex items-center gap-1.5">💡 教学要点</h3>
+          <ul class="space-y-1.5">
+            <template x-for="(pt, i) in selectedFramework?.teaching_points" :key="i">
+              <li class="flex gap-2 text-sm text-ore-dark"><span class="text-gold mt-0.5">•</span><span x-text="pt"></span></li>
+            </template>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-ore mb-1.5 text-sm flex items-center gap-1.5">⚠️ 常见误区</h3>
+          <ul class="space-y-1.5">
+            <template x-for="(m, i) in selectedFramework?.common_misuses" :key="i">
+              <li class="flex gap-2 text-sm text-ore-dark"><span class="text-red-400 mt-0.5">•</span><span x-text="m"></span></li>
+            </template>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-ore mb-1.5 text-sm flex items-center gap-1.5">❓ 自我提问模板</h3>
+          <ul class="space-y-1.5">
+            <template x-for="(q, i) in selectedFramework?.self_questions" :key="i">
+              <li class="flex gap-2 text-sm text-ore-dark"><span class="text-gold-dark mt-0.5">•</span><span x-text="q"></span></li>
+            </template>
+          </ul>
+        </div>
+
+        <!-- Use Framework Button -->
+        <button @click="useFramework(selectedFramework)" class="w-full py-3 rounded-xl neu-btn text-sm font-medium">
+          用这个框架分析我的问题
+        </button>
+
+        <!-- Framework Question Input Dialog -->
+        <div x-show="showFrameworkQuestion" x-transition class="mt-4 bg-gold-pale/50 rounded-xl p-4 border border-gold-light/30" x-cloak>
+          <p class="text-sm text-ore font-medium mb-2">请输入你想用 <span class="text-gold-dark" x-text="selectedFramework?.name"></span> 分析的问题：</p>
+          <textarea x-model="frameworkQuestionInput" rows="3" placeholder="描述你正在思考的问题..." class="w-full neu-input px-4 py-2.5 text-sm placeholder-gray-400 text-ore resize-none mb-3"></textarea>
+          <div class="flex gap-2 justify-end">
+            <button @click="cancelFrameworkUse()" class="px-4 py-2 rounded-xl text-xs font-medium text-ore-dark bg-white/60 hover:bg-white/80 transition-colors">取消</button>
+            <button @click="confirmFrameworkUse()" class="px-4 py-2 rounded-xl text-xs font-medium text-white transition-all hover:shadow-md" style="background: linear-gradient(135deg, #C5A059, #B48F40);">开始分析</button>
+          </div>
+        </div>
+
+        <!-- Simulated AI Coach Chat -->
+        <div class="border-t border-gold-light/20 pt-4">
+          <h3 class="font-semibold text-ore mb-3 text-sm flex items-center gap-1.5">💬 AI 教练对话</h3>
+          <div class="bg-sand-deep rounded-2xl p-3">
+            <!-- Chat Messages -->
+            <div class="chat-scroll space-y-3 max-h-60 overflow-y-auto mb-3" x-ref="chatArea">
+              <template x-for="(msg, i) in chatMessages" :key="i">
+                <div class="flex" :class="msg.role === 'user' ? 'justify-end' : 'justify-start'">
+                  <div :class="msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'" class="px-3 py-2 text-sm">
+                    <span x-text="msg.text"></span>
+                  </div>
+                </div>
+              </template>
+              <div x-show="chatTyping" class="flex justify-start">
+                <div class="chat-bubble-ai px-3 py-2 text-sm text-gold-dark">
+                  <span class="pulse-gold">正在输入...</span>
+                </div>
+              </div>
+            </div>
+            <!-- Chat Input -->
+            <div class="flex gap-2">
+              <input x-model="chatInput" @keydown.enter="sendChat()" placeholder="输入你的问题..." class="flex-1 neu-input px-3 py-2 text-sm placeholder-gray-400 text-ore">
+              <button @click="sendChat()" class="neu-btn px-4 py-2 text-sm">发送</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== History Detail Drawer (RIGHT SIDE) ===== -->
+  <div x-show="showHistoryDetail && selectedHistory" class="fixed inset-0 z-40" x-cloak>
+    <div class="drawer-overlay absolute inset-0" @click="showHistoryDetail = false"></div>
+    <div class="drawer-panel absolute top-0 right-0 h-full w-full max-w-md bg-sand shadow-2xl flex flex-col" :class="showHistoryDetail ? 'open' : ''">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-gold-light/20">
+        <h2 class="font-serif text-base font-bold text-ore">分析详情</h2>
+        <div class="flex items-center gap-3">
+          <button @click="copyHistoryReport()" class="text-xs text-gold hover:text-gold-dark font-medium transition-colors">📋 复制</button>
+          <button @click="showHistoryDetail = false" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gold-pale text-gray-400 transition-colors">✕</button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto drawer-scroll px-5 py-4">
+        <p class="text-xs text-gray-400 mb-2" x-text="selectedHistory?.date"></p>
+        <p class="text-sm font-medium text-ore mb-3" x-text="selectedHistory?.question"></p>
+        <div class="flex flex-wrap gap-1 mb-4">
+          <template x-for="tag in selectedHistory?.frameworks" :key="tag">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-gold-pale text-gold-dark" x-text="tag"></span>
+          </template>
+        </div>
+        <div class="report-area text-sm leading-relaxed text-ore-dark" x-html="selectedHistory?.reportHtml"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const FRAMEWORKS = [
+  // ===== 数字估算类 =====
+  {
+    id: "fermi_estimation",
+    name: "费米推论",
+    category: "数字估算类",
+    summary: "用拆解变量的方式粗略估算未知规模",
+    solves: "当你需要对一个完全未知的数量级做判断，但缺乏精确数据时，费米推论帮你把大问题拆成可估算的小变量，快速得到数量级正确的答案。",
+    thinking_order: ["明确要估算的目标数字", "拆解为2-4个可独立估算的变量", "对每个变量给出合理估算值", "将变量相乘得到结果", "用常识或已知数据校验数量级"],
+    teaching_points: ["关键是拆解而非精确——每个变量只需数量级正确", "估算后一定要做合理性校验，偏差超过10倍说明某个变量估错了", "费米推论的价值在于快速判断方向，不是替代精确计算", "练习时从身边事物入手：一栋楼有多少块砖？一天有多少辆自行车经过？"],
+    self_questions: ["我需要估算什么？能拆成哪几个变量？", "每个变量的数量级是多少？有没有已知参照？", "相乘后的结果和常识吻合吗？差多少倍？", "哪个变量对结果影响最大？我该优先校验哪个？"],
+    common_misuses: ["把估算当精确计算，纠结小数点后的数字", "拆解变量时遗漏关键因子导致数量级错误", "不做校验就相信估算结果"]
+  },
+  {
+    id: "pareto_principle",
+    name: "二八定律",
+    category: "数字估算类",
+    summary: "找到产生80%效果的关键20%因素",
+    solves: "当资源有限、事情繁多时，帮你识别哪些因素真正重要，把精力聚焦在高杠杆点上，而不是平均用力。",
+    thinking_order: ["列出所有影响因素", "评估每个因素的影响程度", "找出贡献最大的前20%因素", "将资源集中到关键少数上", "定期复盘比例是否变化"],
+    teaching_points: ["二八不是精确的20/80，关键是'少数因素产生多数结果'的不对称关系", "先做排序再做聚焦——没有排序就谈不上二八", "不同场景的'二'和'八'不同，不能机械套用", "二八定律可以嵌套使用：20%中的20%就是4%的核心"],
+    self_questions: ["我列出的所有因素中，哪些是真正驱动结果的？", "如果我只能做三件事，我会选哪三件？", "我目前花时间最多的事，真的是最重要的事吗？", "有没有被忽略的高杠杆因素？"],
+    common_misuses: ["机械套用20/80的精确比例", "只看结果不看过程——有些投入短期看不到效果", "忽略'八'中的潜力因素，过早放弃"]
+  },
+  {
+    id: "cost_benefit",
+    name: "成本收益分析",
+    category: "数字估算类",
+    summary: "系统比较做与不做的全部成本和收益",
+    solves: "当你面临'值不值得做'的判断时，帮你把所有成本（金钱、时间、精力、心理）和收益（短期、长期、直接、间接）摆在一起比较，避免只看一面。",
+    thinking_order: ["列出所有直接和间接成本", "列出所有短期和长期收益", "给每项成本和收益估算量级", "计算净收益", "评估风险和最坏情况"],
+    teaching_points: ["成本不只是钱——时间、精力、机会、心理负担都是成本", "收益要分短期和长期，很多重要收益是延迟的", "给每项打分时注意量纲统一，否则无法比较", "净收益为正不代表一定要做——还要看风险承受力"],
+    self_questions: ["我做这件事的全部成本有哪些？有没有忽略隐性成本？", "收益是短期的还是长期的？能持续多久？", "最坏情况下我损失多少？我能承受吗？", "有没有成本更低、收益相近的替代方案？"],
+    common_misuses: ["只算金钱成本，忽略时间、精力和心理成本", "高估短期收益、低估长期成本", "不做风险评估就下结论"]
+  },
+
+  // ===== 根因分析类 =====
+  {
+    id: "first_principles",
+    name: "第一性原理",
+    category: "根因分析类",
+    summary: "打破默认假设，从基本事实重新推导",
+    solves: "当你被既有做法和惯性思维束缚时，帮你回到最基本的事实和原理，重新推导解决方案，突破'别人都这么做'的思维局限。",
+    thinking_order: ["识别当前方案中的所有假设", "逐个追问：这是事实还是惯例？", "剥离所有非必要的假设", "从最基本的事实出发重新推导", "构建新的解决方案"],
+    teaching_points: ["第一性原理不是否定一切，而是区分'事实'和'假设'", "好的推导起点是物理定律、数学原理、已验证的实验数据", "常见的'伪事实'：行业惯例、专家意见、过去经验", "推导出的方案要能被验证，否则只是空想"],
+    self_questions: ["我现在认为理所当然的事情里，哪些其实是假设？", "如果我没有任何限制，最合理的做法是什么？", "有没有更底层的原理可以解释这个现象？", "我的推导链条中，哪一环最薄弱？"],
+    common_misuses: ["把常识全否定导致过度抽象，无法落地", "把'我觉得'当成基本事实", "推导出的方案没有验证就当真理"]
+  },
+  {
+    id: "five_whys",
+    name: "五问法",
+    category: "根因分析类",
+    summary: "连续追问为什么，找到问题的根本原因",
+    solves: "当你面对一个反复出现的问题，表面解决总是无效时，帮你层层追问找到真正的根因，而不是停留在表面症状。",
+    thinking_order: ["描述观察到的现象", "问'为什么会这样？'", "对答案再问'为什么？'", "重复追问直到触及系统性根因", "针对根因制定解决方案"],
+    teaching_points: ["五次是参考不是硬性规定——根因可能在第三层或第七层", "每一层回答必须是可验证的原因，不是猜测", "警惕'人的问题'陷阱——'因为他不认真'不是根因", "好的根因通常是流程、制度或系统层面的问题"],
+    self_questions: ["这个现象的直接原因是什么？我能验证吗？", "再往下一层，为什么会发生这个直接原因？", "我是在找原因还是在找人背锅？", "到了哪一层原因，如果修复了，问题就不会再发生？"],
+    common_misuses: ["机械问五次不判断答案质量", "把'人的态度'当根因，忽略系统和流程问题", "不同人追问出不同根因却不交叉验证"]
+  },
+  {
+    id: "fishbone",
+    name: "鱼骨图",
+    category: "根因分析类",
+    summary: "从人、机、料、法、环五个维度系统找原因",
+    solves: "当问题原因不明且可能涉及多个方面时，帮你系统性地从不同维度排查原因，避免遗漏重要因素。",
+    thinking_order: ["明确要分析的问题（鱼头）", "从人、机、料、法、环五个维度列出可能原因", "对每个原因评估可能性", "找出最可能的主因", "验证主因并制定对策"],
+    teaching_points: ["五个维度是检查清单不是牢笼——可以增减维度", "先广度后深度——先把每个维度的原因列全，再深挖", "主因通常只有1-2个，不要平均分配注意力", "鱼骨图的价值在于过程而非结果——系统排查本身就有价值"],
+    self_questions: ["我有没有遗漏哪个维度的原因？", "每个维度列出的原因中，哪些是真正可能的？", "如果只能解决一个原因，我选哪个？", "这些原因之间有没有因果关系？"],
+    common_misuses: ["分类很多但没找到主因，变成'原因展览'", "只在舒适维度深挖，忽略不熟悉的维度", "列完原因就结束，不做验证和优先级排序"]
+  },
+  {
+    id: "pyramid_principle",
+    name: "金字塔原理",
+    category: "根因分析类",
+    summary: "结论先行，层层支撑，清晰表达",
+    solves: "当你需要向他人清晰传达复杂分析，或者自己需要理清思路时，帮你先说结论、再说原因、最后给证据，让思维和表达都有结构。",
+    thinking_order: ["提炼核心结论", "将支撑结论的理由分为3-5组", "每组理由用事实和数据支撑", "检查上下层之间的逻辑关系", "自上而下表达，自下而上思考"],
+    teaching_points: ["先有结论再组织论据——不是先罗列再总结", "每一层都要回答'为什么'或'怎么做'", "同层论据之间要相互独立（MECE）", "金字塔原理是思维工具也是沟通工具——想清楚才能说清楚"],
+    self_questions: ["我的核心结论是什么？一句话能说清吗？", "支撑结论的理由之间有没有重叠或遗漏？", "每个理由都有事实支撑吗？", "如果对方只听30秒，我要先说什么？"],
+    common_misuses: ["只做排版不提炼结论，变成'要点罗列'", "论据和结论之间逻辑断裂", "层级太多导致核心信息被淹没"]
+  },
+
+  // ===== 决策类 =====
+  {
+    id: "swot",
+    name: "SWOT分析",
+    category: "决策类",
+    summary: "从内外部四个维度看清局势",
+    solves: "当你需要全面评估一个决策的处境时，帮你从优势、劣势、机会、威胁四个维度系统梳理，形成可行动的策略。",
+    thinking_order: ["列出内部优势（Strengths）", "列出内部劣势（Weaknesses）", "列出外部机会（Opportunities）", "列出外部威胁（Threats）", "组合分析：SO/ST/WO/WT策略"],
+    teaching_points: ["SWOT的价值在最后一步——组合策略，不是罗列清单", "优势和劣势是内部的，机会和威胁是外部的——不要混淆", "每项要具体，'有经验'不如'5年行业经验'", "SO策略是进取，WT策略是防守，WO是补短板，ST是差异化"],
+    self_questions: ["我的优势能抓住哪些机会？", "我的劣势会被哪些威胁放大？", "我怎样用优势化解威胁？", "我怎样补短板来抓住机会？"],
+    common_misuses: ["罗列信息不形成行动策略", "优势和机会混淆、劣势和威胁混淆", "列了一堆但每项都不具体"]
+  },
+  {
+    id: "decision_matrix",
+    name: "决策矩阵",
+    category: "决策类",
+    summary: "多选项多标准的量化比较工具",
+    solves: "当你面对多个选项、多个评判标准时，帮你把主观判断量化，系统比较各选项的优劣，避免凭感觉做决定。",
+    thinking_order: ["列出所有备选方案", "列出评判标准", "为每个标准分配权重", "给每个方案在各标准下打分", "加权汇总并复盘"],
+    teaching_points: ["权重比打分更重要——权重的分配反映了你的真实优先级", "打分时用1-5分，避免过于精细导致虚假精确", "做完矩阵后要复盘：结果和直觉一致吗？不一致说明什么？", "决策矩阵是辅助工具，不是替代判断——如果结果明显不合理，检查权重和标准"],
+    self_questions: ["我选的评判标准全面吗？有没有遗漏重要的？", "权重的分配真的反映了我的优先级吗？", "打分时我是不是在合理化已有倾向？", "如果改变权重，结果会怎样变化？"],
+    common_misuses: ["权重随意分配却假装客观", "标准遗漏导致结果偏颇", "打分时为了得到想要的结论而调整分数"]
+  },
+  {
+    id: "ooda",
+    name: "OODA循环",
+    category: "决策类",
+    summary: "观察-判断-决策-行动的快速迭代循环",
+    solves: "当你需要在不确定环境中快速行动时，帮你建立'观察→判断→决策→行动→再观察'的循环，避免过度分析而错过时机。",
+    thinking_order: ["观察（Observe）：收集当前信息", "判断（Orient）：理解信息、形成判断", "决策（Decide）：选择行动方案", "行动（Act）：执行并观察结果", "回到观察，开始新一轮循环"],
+    teaching_points: ["速度比完美重要——快速迭代胜过一次完美计划", "判断（Orient）是最关键也最容易被忽略的步骤", "每次循环的信息都比上次更丰富——行动本身就是获取信息的方式", "OODA的核心是比对手更快地完成循环"],
+    self_questions: ["我现在观察到的事实是什么？有没有忽略的信息？", "我的判断是基于事实还是假设？", "我是在做决定还是在拖延？", "行动后我观察到什么新信息？"],
+    common_misuses: ["只计划不进入行动，永远在观察和判断阶段", "跳过判断直接行动，凭本能反应", "一轮循环后就停止，不复盘不迭代"]
+  },
+  {
+    id: "regret_minimization",
+    name: "后悔最小化",
+    category: "决策类",
+    summary: "站在未来回看现在，选择长期后悔最少的路",
+    solves: "当面临重大人生选择（职业、关系、城市）时，帮你跳出短期得失，从长期视角判断哪个选择会让你更少后悔。",
+    thinking_order: ["想象自己80岁回看这个选择", "对每个选项问：不做会后悔吗？", "区分短期痛苦和长期后悔", "选择长期后悔最小的选项", "制定降低风险的配套措施"],
+    teaching_points: ["后悔最小化不是快乐最大化——有些选择短期痛苦但长期无悔", "人通常对'没做的事'比'做错的事'更后悔", "这个框架适合重大人生选择，不适合日常小事", "选择后要配套风险管理——不是赌上一切"],
+    self_questions: ["10年后回头看，我会后悔没做哪个选择？", "我是在害怕失败还是在害怕遗憾？", "选了这条路最坏会怎样？我能承受吗？", "我怎样在选定的路上降低风险？"],
+    common_misuses: ["用浪漫化想象忽略现实风险", "把所有选择都套用后悔最小化，导致冲动决策", "只考虑自己的后悔，忽略对他人影响"]
+  },
+
+  // ===== 系统思维类 =====
+  {
+    id: "mece",
+    name: "MECE原则",
+    category: "系统思维类",
+    summary: "相互独立、完全穷尽地拆解问题",
+    solves: "当你需要把复杂问题拆解成可管理的部分时，帮你确保分类不重叠、不遗漏，避免分析盲区。",
+    thinking_order: ["确定要拆解的问题范围", "选择拆解维度", "检查各部分是否相互独立", "检查各部分是否完全穷尽", "如有遗漏或重叠则调整拆解方式"],
+    teaching_points: ["MECE是检查清单不是目的——为了分类而分类是浪费时间", "好的拆解维度取决于问题本身——没有万能拆解法", "常见拆解维度：时间、空间、流程、对象、属性", "MECE的难点在'完全穷尽'——总有你想不到的角落"],
+    self_questions: ["我的分类之间有没有重叠？", "有没有遗漏的重要部分？", "这个拆解维度对解决问题有帮助吗？", "换个角度拆解会不会更清晰？"],
+    common_misuses: ["为了分类而分类，拆解后无法指导行动", "追求完美的MECE而忽略时效性", "只做到'相互独立'却忽略'完全穷尽'"]
+  },
+  {
+    id: "feedback_loop",
+    name: "反馈循环",
+    category: "系统思维类",
+    summary: "识别系统中的增强回路和平衡回路",
+    solves: "当你想理解一个系统为什么会自我强化或自我平衡时，帮你找到关键的反馈回路，理解系统变化的内在动力。",
+    thinking_order: ["识别系统中的关键变量", "找出变量之间的因果关系", "判断是增强回路（正反馈）还是平衡回路（负反馈）", "找到回路中的关键杠杆点", "制定干预策略"],
+    teaching_points: ["增强回路导致指数增长或衰退——早期干预很重要", "平衡回路维持稳定——但也可能导致停滞", "大多数系统同时存在增强和平衡回路", "干预系统要找到杠杆点——最小努力最大效果"],
+    self_questions: ["这个系统中哪些变量在相互影响？", "是增强回路还是平衡回路在主导？", "回路中的关键杠杆点在哪里？", "我的干预会触发什么新的反馈？"],
+    common_misuses: ["画复杂图但不指导行动，变成'系统图展览'", "只画正反馈忽略负反馈，导致预测偏差", "忽略时间延迟——反馈不是即时生效的"]
+  },
+  {
+    id: "iceberg_model",
+    name: "冰山模型",
+    category: "系统思维类",
+    summary: "从表面事件深入到心智模型的四层分析",
+    solves: "当你只看到表面现象却找不到深层原因时，帮你逐层深入：事件→模式→结构→心智模型，找到问题的根源。",
+    thinking_order: ["观察表面事件", "寻找重复出现的模式", "分析产生模式的系统结构", "挖掘驱动结构的心智模型", "在深层制定改变策略"],
+    teaching_points: ["事件是冰山一角——同样的表面事件可能有完全不同的深层原因", "模式需要时间观察——不要从单一事件推断模式", "结构是规则、流程、资源分配方式——是可以改变的", "心智模型是最深层也是最难改变的——但改变它效果最大"],
+    self_questions: ["这个事件是孤立的还是反复出现的？", "反复出现的模式背后有什么结构在支撑？", "这个结构为什么存在？谁在维护它？", "驱动这个结构的心智模型是什么？它合理吗？"],
+    common_misuses: ["过度解读，从单一事件就推断深层心智模型", "只分析不行动——理解了冰山不代表解决了问题", "忽略眼前事实，一切都往深层找原因"]
+  },
+  {
+    id: "second_order",
+    name: "二阶思维",
+    category: "系统思维类",
+    summary: "预判行动的后续连锁影响",
+    solves: "当你只看到行动的直接结果就做决定时，帮你追问'然后呢？'，预判二阶、三阶影响，避免解决一个问题却制造更大问题。",
+    thinking_order: ["描述行动的直接结果", "追问'然后呢？'", "再追问'然后呢？'", "评估连锁影响的总体效果", "决定是否调整行动方案"],
+    teaching_points: ["好的决策不仅要看直接结果，还要看后续影响", "二阶效应往往和一阶效应方向相反——短期好处长期代价", "不需要无限追问——通常到三阶就够了", "二阶思维不是犹豫不决，而是更全面地评估后再行动"],
+    self_questions: ["这个行动的直接结果是什么？", "直接结果会引发什么后续变化？", "后续变化对我有利还是不利？", "有没有办法获得一阶好处同时减少二阶代价？"],
+    common_misuses: ["无限发散无法决策，每一步都担心后果", "只往坏处想，忽略二阶效应也可能带来好处", "把二阶思维当成拖延的借口"]
+  },
+
+  // ===== 创新突破类 =====
+  {
+    id: "reverse_thinking",
+    name: "逆向思维",
+    category: "创新突破类",
+    summary: "假设失败再反向预防，找到盲区",
+    solves: "当你正向思考陷入僵局时，帮你反过来想：怎样才会失败？然后反向预防，找到正向思考容易忽略的风险和盲区。",
+    thinking_order: ["假设目标已经失败", "列出所有可能导致失败的原因", "评估每个失败原因的可能性", "反向制定预防措施", "将预防措施转化为正向行动方案"],
+    teaching_points: ["逆向思维不是唱反调，而是补盲区", "失败原因往往比成功路径更容易列举", "查理·芒格：'反过来想，总是反过来想'", "逆向思维和正向思维结合使用效果最好"],
+    self_questions: ["如果这件事彻底失败了，最可能是什么原因？", "我现在有没有在忽略某些失败风险？", "怎样做才能确保失败？然后反向操作", "我的正向计划中，哪一步最脆弱？"],
+    common_misuses: ["只唱反调不产出建设性方案", "过度关注风险导致不敢行动", "把逆向思维当成否定一切的借口"]
+  },
+  {
+    id: "analogical_reasoning",
+    name: "类比推理",
+    category: "创新突破类",
+    summary: "借鉴其他领域的成功经验解决当前问题",
+    solves: "当你在本领域找不到解决方案时，帮你从其他领域寻找相似结构，借鉴成熟方法，加速创新。",
+    thinking_order: ["分析当前问题的核心结构", "寻找具有相似结构的其他领域", "研究该领域的解决方案", "提取可迁移的核心方法", "调整适配到当前问题"],
+    teaching_points: ["类比的关键是结构相似而非表面相似", "好的类比：问题的因果结构相同，只是领域不同", "类比后一定要验证——不同领域的关键差异可能导致方案失效", "跨领域类比是创新的重要来源——很多突破来自跨界借鉴"],
+    self_questions: ["我的问题的核心结构是什么？", "哪些其他领域有相似结构的问题？", "那个领域的解决方案是什么？", "两个领域的关键差异在哪里？方案需要怎样调整？"],
+    common_misuses: ["表面类比忽略关键差异——'看起来像'不等于'结构相同'", "照搬方案不做适配调整", "类比过度——强行套用不相关的经验"]
+  },
+  {
+    id: "six_thinking_hats",
+    name: "六顶思考帽",
+    category: "创新突破类",
+    summary: "从六个不同角度全面讨论问题",
+    solves: "当团队讨论容易陷入单一视角或情绪化争论时，帮你用六种角色系统覆盖：事实、情绪、风险、收益、创意、总结，确保讨论全面。",
+    thinking_order: ["白帽：事实和数据是什么？", "红帽：直觉和感受是什么？", "黑帽：风险和问题有哪些？", "黄帽：价值和机会有哪些？", "绿帽：有什么创新方案？", "蓝帽：总结和下一步行动"],
+    teaching_points: ["每顶帽子代表一种思维方式，不是一个人", "顺序可以调整——但黑帽和黄帽不要连着戴", "红帽允许非理性——直觉也是重要信息", "蓝帽是主持人——确保每顶帽子都得到充分表达"],
+    self_questions: ["我有没有忽略事实（白帽）？", "我的真实感受是什么（红帽）？", "最坏会怎样（黑帽）？", "最好会怎样（黄帽）？", "有没有完全不同的做法（绿帽）？"],
+    common_misuses: ["角色切换流于形式——每顶帽子只说一两句就结束", "黑帽时间过长导致讨论变成批判会", "忽略红帽——认为直觉不理性所以不重要"]
+  },
+  {
+    id: "scamper",
+    name: "SCAMPER",
+    category: "创新突破类",
+    summary: "七种操作激发产品和方案创新",
+    solves: "当你需要改进现有产品或方案但缺乏灵感时，帮你用替代、合并、调整、修改、他用、消除、重排七种操作激发创新。",
+    thinking_order: ["替代（Substitute）：能替换什么？", "合并（Combine）：能和什么组合？", "调整（Adapt）：能借鉴什么？", "修改（Modify）：能放大或缩小什么？", "他用（Put to other uses）：能用于其他场景吗？", "消除（Eliminate）：能去掉什么？", "重排（Rearrange）：能重新排列什么？"],
+    teaching_points: ["不需要七种都用——选2-3种最相关的深入思考", "每种操作都要追问'这会带来什么新价值'", "消除往往被低估——去掉不必要的东西本身就是创新", "SCAMPER适合渐进式创新，不适合颠覆式创新"],
+    self_questions: ["哪个部分可以用更好的替代？", "哪些元素组合在一起会产生新价值？", "其他领域的做法能借鉴吗？", "去掉什么反而会更好？"],
+    common_misuses: ["每项都想一遍但不筛选，变成创意清单", "只产生想法不评估可行性", "过度使用导致方案越来越复杂"]
+  },
+
+  // ===== 人际自我类 =====
+  {
+    id: "stakeholder_map",
+    name: "利益相关者地图",
+    category: "人际自我类",
+    summary: "看清谁有利益、谁有权力、如何沟通",
+    solves: "当你的决策涉及多方人员时，帮你系统识别谁会受益、谁会受损、谁有决定权，制定针对性的沟通策略。",
+    thinking_order: ["列出所有利益相关者", "分析每个人的利益诉求", "评估每个人的影响力和权力", "判断谁支持、谁反对、谁中立", "制定针对性的沟通策略"],
+    teaching_points: ["利益不只是金钱——面子、权力、安全感都是利益", "权力不只是职位——信息、关系、专业都是权力", "中立者可能被拉拢——不要忽略他们", "沟通策略因人而异——对支持者巩固、对反对者化解、对中立者争取"],
+    self_questions: ["谁会从这个决定中受益？谁会受损？", "谁有最终决定权？谁有否决权？", "反对者的核心顾虑是什么？能化解吗？", "我需要优先沟通谁？"],
+    common_misuses: ["只列人名不分析利益和权力", "忽略间接利益相关者——有时旁观者也有影响力", "沟通策略一刀切，对不同人用同样方式"]
+  },
+  {
+    id: "perspective_taking",
+    name: "换位思考",
+    category: "人际自我类",
+    summary: "理解对方的目标、压力和顾虑",
+    solves: "当你无法理解对方为什么这样做时，帮你站在对方角度思考：他的目标是什么？他面临什么压力？他有什么顾虑？从而找到更好的应对方式。",
+    thinking_order: ["对方的核心目标是什么？", "对方面临什么压力和限制？", "对方有什么顾虑和恐惧？", "基于理解，我该如何应对？"],
+    teaching_points: ["换位思考是理解不是认同——理解对方不等于同意对方", "关注对方的处境而非性格——'他为什么这样做'比'他是什么人'更有用", "换位思考的终点是找到双赢方案，不是单方面妥协", "真正的换位思考需要信息——不要凭想象，要去了解"],
+    self_questions: ["如果我是他，我为什么会这样做？", "他最在意什么？最怕什么？", "我的行为在他看来是什么样的？", "有没有既满足我的需求又照顾他顾虑的方案？"],
+    common_misuses: ["变成讨好对方，丧失自己的立场", "凭想象猜测对方想法，不去实际了解", "只换位不行动——理解了但不改变自己的做法"]
+  },
+  {
+    id: "growth_mindset",
+    name: "成长型思维",
+    category: "人际自我类",
+    summary: "把失败视为学习机会，关注可提升的部分",
+    solves: "当你面对失败或挫折容易自我否定时，帮你把注意力从'我不行'转向'我哪里可以提升'，建立持续进步的心态和方法。",
+    thinking_order: ["客观描述当前能力和结果", "区分'暂时做不到'和'永远做不到'", "找到可以提升的具体部分", "制定练习和改进路径", "寻求反馈并持续调整"],
+    teaching_points: ["成长型思维不是'只要努力就能成功'——方法比努力更重要", "'暂时做不到'是事实，'永远做不到'是判断——不要混淆", "具体的提升计划比空喊'我能行'有效一百倍", "成长型思维需要配合反馈——没有反馈的练习只是重复"],
+    self_questions: ["我是在说'我不行'还是'我暂时还不行'？", "具体哪个部分我可以提升？", "谁擅长这个？我能向他学习什么？", "我怎样获得真实的反馈？"],
+    common_misuses: ["用努力掩盖方法错误——'只要坚持就行'是毒鸡汤", "把成长型思维当成否定困难的借口", "只有心态没有具体行动计划"]
+  },
+
+  // ===== 中式思维类 =====
+  {
+    id: "zhongyong",
+    name: "中庸思维",
+    category: "中式思维类",
+    summary: "在对立中找到平衡的可接受方案",
+    solves: "当你面对两难选择，两边都有道理时，帮你找到双方都能接受的中间方案，而不是非此即彼。",
+    thinking_order: ["识别对立的两个极端", "找到双方的共同目标", "分析各方的核心诉求和可妥协部分", "设计兼顾双方核心诉求的方案", "验证方案是否各方可接受"],
+    teaching_points: ["中庸不是和稀泥——是找到真正兼顾各方核心利益的方案", "中庸的关键是区分'核心诉求'和'立场表达'——立场可以妥协，核心诉求不能", "好的中庸方案让每方都觉得'不是最理想但可以接受'", "中庸需要创造力——不是简单取中间值"],
+    self_questions: ["两方的核心诉求分别是什么？有没有共同点？", "哪些是立场表达（可以妥协），哪些是核心诉求（不能让步）？", "有没有一个方案能同时满足双方的核心诉求？", "如果无法兼顾，谁的诉求更应该优先？为什么？"],
+    common_misuses: ["误解为和稀泥，各打五十大板", "简单取中间值，双方都不满意", "为了平衡而牺牲原则"]
+  },
+  {
+    id: "guanxi",
+    name: "关系思维",
+    category: "中式思维类",
+    summary: "分析关系网络对决策的影响",
+    solves: "在中国社会语境下，帮你识别关键人物、关系链条和权力结构，理解关系网络如何影响你的决策和行动。",
+    thinking_order: ["识别决策涉及的关键人物", "梳理人物之间的关系链条", "分析关系中的权力和影响力", "评估关系网络对决策的影响", "制定考虑关系因素的策略"],
+    teaching_points: ["关系思维不是走后门——是理解社会网络如何运作", "关键人物不只是领导——信息枢纽、意见领袖同样重要", "关系是双向的——你能给别人提供什么价值？", "关系思维要和规则思维结合——不能只讲人情不看规则"],
+    self_questions: ["这个决策中谁是关键人物？为什么？", "他们之间的关系是什么？有没有利益冲突？", "谁的信息最灵通？谁的意见最有影响力？", "我能为关系网络提供什么价值？"],
+    common_misuses: ["只讲人情不看规则，导致合规风险", "过度依赖关系忽略能力和制度", "把关系思维等同于拉帮结派"]
+  },
+  {
+    id: "face_cost",
+    name: "面子成本",
+    category: "中式思维类",
+    summary: "评估决策中的社会面子代价和化解方式",
+    solves: "当你的决策可能让他人'丢面子'时，帮你评估面子成本，找到既达成目标又给对方台阶的方式。",
+    thinking_order: ["识别谁的面子会受损", "评估面子受损的程度", "设计给台阶的方式", "在目标达成和面子维护之间找平衡", "执行时注意方式方法"],
+    teaching_points: ["面子成本是真实的社会成本——忽略它会导致执行阻力", "给台阶不是虚伪——是尊重他人的社会性需求", "面子不只是'被批评'——被忽视、被绕过都会丢面子", "有时候面子成本高到需要调整方案——这是务实不是软弱"],
+    self_questions: ["我的方案会让谁丢面子？", "有没有不损害面子的替代方式？", "怎样给对方台阶下？", "面子成本和实际收益相比，值得吗？"],
+    common_misuses: ["过度顾及面子放弃原则", "认为考虑面子就是不正直", "只考虑对方面子不考虑自己的底线"]
+  },
+  {
+    id: "big_picture",
+    name: "大局观",
+    category: "中式思维类",
+    summary: "从整体目标看局部取舍",
+    solves: "当你纠结于局部得失时，帮你回到全局目标，判断哪些局部值得争取、哪些可以放弃，做出符合整体利益的取舍。",
+    thinking_order: ["明确全局目标", "识别当前决策在全局中的位置", "判断局部得失对全局的影响", "做出符合全局利益的取舍", "制定局部损失的补偿方案"],
+    teaching_points: ["大局观不是空谈格局——是具体的取舍判断", "知道'放弃什么'比知道'追求什么'更能体现大局观", "全局目标要具体——'做大做强'不是好目标", "局部损失要配套补偿——不能只要求别人牺牲"],
+    self_questions: ["我的全局目标是什么？具体可衡量吗？", "当前纠结的问题在全局中占多大比重？", "如果放弃这个局部，全局会怎样？", "我怎样补偿局部损失？"],
+    common_misuses: ["空谈格局不落地——'要有大局观'但没有具体取舍", "用大局观压制合理诉求——'你要顾全大局'变成道德绑架", "大局观变成不作为的借口——什么都不争"]
+  },
+  {
+    id: "timing",
+    name: "时机思维",
+    category: "中式思维类",
+    summary: "判断现在是否是行动的合适时机",
+    solves: "当你不确定'现在是不是该做这件事'时，帮你从趋势、窗口期、阻力、节奏四个维度判断时机是否成熟。",
+    thinking_order: ["判断大趋势的方向", "评估当前窗口期的宽窄", "分析行动的阻力大小", "确定合适的行动节奏", "制定时机不成熟时的准备计划"],
+    teaching_points: ["时机不是等来的——是准备+判断+行动的结果", "窗口期有宽度——不是'现在或永远不'", "阻力大不代表不该做——可能需要调整方式而非放弃", "时机思维不是拖延的借口——'等时机'和'做准备'是两回事"],
+    self_questions: ["大趋势对我有利还是不利？", "窗口期还有多宽？我还有多少时间？", "现在的阻力是什么？能化解吗？", "如果现在不做，以后会更难还是更容易？"],
+    common_misuses: ["把拖延包装成等时机", "过度分析时机导致错过窗口期", "只看有利因素忽略阻力评估"]
+  },
+  {
+    id: "gray_cognition",
+    name: "灰度认知",
+    category: "中式思维类",
+    summary: "在不确定和矛盾中做出合理判断",
+    solves: "当问题没有非黑即白的答案时，帮你在不确定性中找到概率最大的方向，同时保留调整空间。",
+    thinking_order: ["承认问题的复杂性和不确定性", "评估各选项的概率和影响", "选择概率最大的方向", "预留调整和修正的余地", "根据新信息动态修正判断"],
+    teaching_points: ["灰度不是没有立场——是在不确定中选择概率最大的方向", "保留余地不是犹豫不决——是为新信息留出调整空间", "灰度认知需要区分'不确定'和'不知道'——前者有概率判断，后者没有", "动态修正是灰度认知的核心——新信息到来时要敢于调整"],
+    self_questions: ["我确定的部分是什么？不确定的部分是什么？", "各选项的概率是多少？我凭什么判断？", "如果我选错了，怎样最快发现和修正？", "我需要什么新信息来降低不确定性？"],
+    common_misuses: ["没有立场什么都模糊，变成'都行'", "把灰度当成不做决定的借口", "不做概率判断——'不确定'不等于'各50%'"]
+  },
+
+  // ===== 不可预见类 =====
+  {
+    id: "black_swan",
+    name: "黑天鹅思维",
+    category: "不可预见类",
+    summary: "识别小概率大冲击事件并预留方案",
+    solves: "当你只考虑大概率事件时，帮你识别可能造成毁灭性影响的小概率事件，评估承受力并预留应对方案。",
+    thinking_order: ["识别可能的极端事件", "评估每个极端事件的冲击程度", "评估自身的承受能力", "对不可承受的极端事件预留方案", "控制预留成本在合理范围"],
+    teaching_points: ["黑天鹅思维不是天天担心极端——是确保极端发生时不会致命", "关注'冲击×概率'——极小概率但致命的事件需要防范", "预留方案的成本要合理——不能为1%的概率花90%的资源", "区分'可保险的'和'不可保险的'——前者买保险，后者建韧性"],
+    self_questions: ["有什么极端事件会让我彻底翻不了身？", "这些极端事件的概率虽然低，但发生了我能承受吗？", "预留方案的成本是多少？值得吗？", "我怎样建立韧性而不是只买保险？"],
+    common_misuses: ["天天担心极端风险导致不敢行动", "为所有小概率事件都预留方案，成本过高", "只关注已知的小概率事件，忽略未知的黑天鹅"]
+  },
+  {
+    id: "antifragile",
+    name: "反脆弱",
+    category: "不可预见类",
+    summary: "设计能从波动和冲击中获益的结构",
+    solves: "当你想增强自己或组织面对不确定性的能力时，帮你设计不仅能承受冲击，还能从冲击中获益的结构和策略。",
+    thinking_order: ["识别可能面临的冲击类型", "分析当前结构的脆弱点", "设计能从冲击中获益的结构", "用小规模试错验证", "保留收益上限、控制损失下限"],
+    teaching_points: ["反脆弱不是坚强——坚强是承受冲击不变，反脆弱是冲击后更强", "反脆弱的核心是'凸性'——收益无限、损失有限", "小规模试错是反脆弱的实践方式——用小损失获取大信息", "杠铃策略：90%极度安全+10%极度冒险，避免中等风险"],
+    self_questions: ["我的结构是脆弱的、坚强的还是反脆弱的？", "怎样让冲击成为我的机会而非威胁？", "我怎样用小试错获取大信息？", "我的损失下限在哪里？怎样控制它？"],
+    common_misuses: ["把冒险误当反脆弱——没有控制损失下限的冒险只是赌博", "追求反脆弱导致过度复杂化", "忽略反脆弱需要时间——不是每次冲击都能立即获益"]
+  },
+  {
+    id: "scenario_planning",
+    name: "情景规划",
+    category: "不可预见类",
+    summary: "为多种可能的未来准备预案",
+    solves: "当未来高度不确定时，帮你构建多种可能的情景，为每种情景准备预案，而不是押注单一预测。",
+    thinking_order: ["识别关键不确定性因素", "构建3-4种差异化的未来情景", "为每种情景设计预警信号", "制定各情景下的应对预案", "找到在所有情景下都有效的通用策略"],
+    teaching_points: ["情景规划不是预测——是让你在不同未来都有准备", "好的情景之间差异要大——覆盖最好、最坏和最可能", "预警信号比情景本身更重要——它告诉你哪种情景正在发生", "通用策略是情景规划的精华——不管未来怎样都有用"],
+    self_questions: ["最大的不确定性是什么？", "最好、最坏、最可能的未来分别是什么？", "什么信号告诉我哪种情景正在发生？", "有没有不管哪种情景都有用的策略？"],
+    common_misuses: ["把情景当预测——只准备最可能的情景", "情景之间差异不够大，本质上是同一种未来", "只构建情景不制定预案"]
+  },
+  {
+    id: "margin_of_safety",
+    name: "安全边际",
+    category: "不可预见类",
+    summary: "预留足够的缓冲防止风险打穿底线",
+    solves: "当你的计划容错率很低时，帮你在钱、时间、精力上预留余量，确保即使事情比预期差也不会崩溃。",
+    thinking_order: ["找出最坏可能情况", "评估最坏情况下的资源需求", "在关键资源上预留安全边际", "确保边际成本合理", "定期检查边际是否充足"],
+    teaching_points: ["安全边际的大小取决于错误的代价——代价越大边际越要大", "安全边际不是浪费——是保险费", "关键资源通常只有1-2个——找出它们重点预留", "安全边际要动态调整——环境变化时边际也要变"],
+    self_questions: ["最坏情况下我需要多少资源？", "我现在的余量够不够覆盖最坏情况？", "哪个资源的短缺最致命？", "预留的边际成本合理吗？有没有过度保守？"],
+    common_misuses: ["过度保守不敢行动——预留了远超需要的边际", "只在金钱上预留，忽略时间和精力的边际", "预留后不检查——环境变化后边际可能不够了"]
+  }
+];
+
+const REALITY_FILTERS = [
+  {
+    id: "urban_rural",
+    name: "城乡差异",
+    trigger_scenarios: ["城市", "县城", "小地方", "回老家", "一线", "二线", "三四线"],
+    check_items: ["地域市场规则差异", "本地关系网络影响", "信息透明度", "资源集中度"]
+  },
+  {
+    id: "regulatory",
+    name: "监管合规",
+    trigger_scenarios: ["创业", "开店", "投资", "牌照", "审批", "合规", "政策"],
+    check_items: ["是否涉及审批牌照", "当地执行稳定性", "合规成本", "政策变化风险"]
+  },
+  {
+    id: "income_class",
+    name: "收入阶层",
+    trigger_scenarios: ["工资", "赚钱", "存款", "负债", "房贷", "阶层"],
+    check_items: ["收入来源结构", "上升通道", "行业增长性", "选择对未来十年位置的影响"]
+  },
+  {
+    id: "social_network",
+    name: "关系网络",
+    trigger_scenarios: ["关系", "人脉", "托人", "介绍", "圈子", "熟人"],
+    check_items: ["关键影响人", "谁会因选择受损", "是否需要给对方台阶", "名声口碑影响"]
+  },
+  {
+    id: "identity_gender",
+    name: "身份性别",
+    trigger_scenarios: ["性别", "女性", "男性", "生育", "家庭分工", "职场天花板"],
+    check_items: ["安全成本", "生育窗口", "家庭分工", "社会评价双标", "职场天花板", "情感支持网络"]
+  },
+  {
+    id: "face_cost_filter",
+    name: "面子成本",
+    trigger_scenarios: ["面子", "丢人", "丢脸", "不好意思", "别人怎么看", "父母不同意"],
+    check_items: ["谁的面子会受损", "如何给台阶", "面子成本vs实际收益"]
+  }
+];
+
+const CATEGORIES = ["全部", "数字估算类", "根因分析类", "决策类", "系统思维类", "创新突破类", "人际自我类", "中式思维类", "不可预见类"];
+
+const DEFAULT_FRAMEWORK_MAP = {
+  "decision": ["decision_matrix", "regret_minimization"],
+  "root-cause": ["five_whys", "iceberg_model"],
+  "future": ["scenario_planning", "second_order"],
+  "action-plan": ["pyramid_principle", "mece"],
+  "interpersonal": ["perspective_taking", "stakeholder_map"],
+  "career": ["regret_minimization", "antifragile"],
+  "innovation": ["first_principles", "scamper"]
+};
+
+function buildFrameworkSummaryList() {
+  return FRAMEWORKS.map(f => `${f.id}: ${f.name}（${f.category}）- ${f.summary}`).join('\n');
+}
+
+function buildRealityFilterTriggers() {
+  return REALITY_FILTERS.map(f => `${f.id}（${f.name}）: 触发词 [${f.trigger_scenarios.join(', ')}]`).join('\n');
+}
+
+function getFrameworkById(id) {
+  return FRAMEWORKS.find(f => f.id === id);
+}
+
+function buildFrameworkDetails(frameworkIds) {
+  return frameworkIds.map(id => {
+    const fw = getFrameworkById(id);
+    if (!fw) return '';
+    return `【${fw.name}】
+类别：${fw.category}
+解决什么：${fw.solves}
+思考步骤：${fw.thinking_order.map((s,i) => `${i+1}. ${s}`).join(' → ')}
+教学要点：${fw.teaching_points.join('；')}
+常见误区：${fw.common_misuses.join('；')}
+自我提问：${fw.self_questions.join('；')}`;
+  }).join('\n\n');
+}
+
+function buildRealityFilterDetails(filterIds) {
+  return filterIds.map(id => {
+    const f = REALITY_FILTERS.find(rf => rf.id === id);
+    if (!f) return '';
+    return `【${f.name}】检查项：${f.check_items.join('；')}`;
+  }).join('\n\n');
+}
+
+const ROUTER_PROMPT = `你是 ThinkBridge 的问题诊断器。
+
+你的任务是根据用户问题，判断问题类型并选择合适的思维框架。
+
+规则：
+1. 先判断问题底层结构（decision / root-cause / future / action-plan / interpersonal / career / innovation）
+2. 从框架库中选择 1-3 个主框架 + 1-2 个验证框架
+3. 根据问题涉及的中国现实场景，选择必要的现实约束过滤器
+4. 如果信息不足，返回 status="need_more_info" 和 1-3 个追问
+5. 必须返回 JSON，不要输出其他内容
+
+框架库简表：
+{{FRAMEWORK_SUMMARY_LIST}}
+
+现实约束触发规则：
+{{REALITY_FILTER_TRIGGERS}}
+
+输出格式：
+{"status": "ready"|"need_more_info", "needs_clarification": bool, "clarifying_questions": [], "problem_type": "", "problem_subtype": "", "selected_frameworks": [], "validation_frameworks": [], "reality_filters": [], "reason": ""}`;
+
+const LEARNING_ANALYZER_PROMPT = `你是 ThinkBridge，一个 AI 思维框架教练。
+
+你的目标不是只给用户答案，而是教会用户如何使用思维框架。
+
+当用户提出问题时，你需要：
+1. 判断这个问题本质属于哪类问题
+2. 选择 1-3 个合适的思维框架
+3. 解释为什么选择这些框架
+4. 解释每个框架的底层逻辑
+5. 展示这个框架的思考步骤
+6. 每一步都说明"为什么要这样思考"
+7. 把用户的问题代入框架完整示范
+8. 说明这个框架的常见误区
+9. 总结用户以后可以复用的自我提问模板
+10. 最后给 1-3 个练习题，帮助用户迁移掌握
+
+你不是替用户做决定，而是帮助用户看清问题结构、关键变量、风险和可行动方案。
+
+当前选中的框架：
+{{SELECTED_FRAMEWORKS_DETAILS}}
+
+当前现实约束：
+{{SELECTED_REALITY_FILTERS}}
+
+注意：
+- 不要只给结论
+- 不要堆概念
+- 不要展示内部推理链
+- 用简单中文解释
+- 明确说明每一步为什么要这样思考
+- 对医疗、法律、金融投资问题，不给确定性建议
+- 输出使用 Markdown
+
+【重要规则】
+1. 「为什么选择这些框架」必须针对用户的具体情况解释每个框架的入选理由。格式：**框架名**：因为[用户的具体情况]，这个框架能帮你[解决什么]。不要只列名字或泛泛而谈。
+2. 分析中只能使用「为什么选择这些框架」里列出的框架。如果分析中需要用到额外框架（如利益相关者地图、二阶思维等），必须先在框架选择部分列出并解释原因。绝对不要在分析中突然引入未声明的框架名称。
+3. 「我以后如何自己使用这个框架」中的自我提问模板，每个问题必须是精炼的纯提问，不要加括号解释，不要加说明性文字，让用户能一眼记住。每条不超过 20 字。
+4. 每个框架的分析末尾必须包含「⚠️ 常见误区」小节，列出 2-3 个该框架最容易犯的误用方式，并结合用户的具体问题举例说明。误区内容参考框架库中该框架的常见误用说明，但必须用用户能理解的语言改写，不能照搬。
+
+请按以下结构输出：
+1. 问题理解
+2. 问题类型诊断
+3. 为什么选择这些框架（每个框架必须解释为什么选它）
+4. 每个框架的分析（只能使用上面列出的框架），每个框架按以下子结构输出：
+   - 思考方式与步骤
+   - 每一步为什么这样思考
+   - 代入用户问题示范
+   - ⚠️ 常见误区（2-3 个，结合用户问题举例）
+5. 现实约束检查
+6. 交叉验证
+7. 综合建议
+8. 我以后如何自己使用这个框架（自我提问模板，精炼纯提问，每条不超过 20 字）
+9. 练习题`;
+
+const QUICK_ANALYZER_PROMPT = `你是 ThinkBridge，一个 AI 思维框架教练。
+
+你的目标不是只给用户答案，而是教会用户如何使用思维框架。
+
+当前是快速分析模式。请：
+- 输出总长度控制在学习模式的 1/3 以内
+- 每个框架只保留核心逻辑和 1-2 个教学要点
+- 不需要交叉验证章节
+- 不需要现实约束检查章节（仅融入分析中）
+- 不需要练习题章节
+- 必须保留："下次你可以这样想"的自我提问模板
+
+当前选中的框架：
+{{SELECTED_FRAMEWORKS_DETAILS}}
+
+当前现实约束：
+{{SELECTED_REALITY_FILTERS}}
+
+注意：
+- 不要只给结论
+- 不要堆概念
+- 不要展示内部推理链
+- 用简单中文解释
+- 对医疗、法律、金融投资问题，不给确定性建议
+- 输出使用 Markdown
+
+【重要规则】
+1. 「适合框架」必须解释为什么选每个框架。格式：**框架名**：因为[用户的具体情况]，这个框架能帮你[解决什么]。不要只列名字。
+2. 分析中只能使用「适合框架」里列出的框架。如果分析中需要用到额外框架（如利益相关者地图、二阶思维等），必须先在「适合框架」中列出并解释原因。绝对不要在分析中突然引入未声明的框架名称。
+3. 「下次你可以这样想」的每个问题必须是精炼的纯提问，不要加括号解释，不要加说明性文字，让用户能一眼记住。每条不超过 20 字。
+4. 每个框架的分析末尾必须包含「⚠️ 常见误区」，列出 1-2 个该框架最容易犯的误用方式，结合用户问题简要说明。
+
+请按以下结构输出：
+1. 判断（一句话）
+2. 适合框架（每个框架必须解释为什么选它）
+3. 分析（只能使用上面列出的框架，每个框架末尾加 ⚠️ 常见误区）
+4. 风险提醒
+5. 行动建议
+6. 下次你可以这样想（精炼纯提问，每条不超过 20 字）`;
+
+// Pre-written AI coaching responses per framework
+const COACHING_RESPONSES = {
+  fermi_estimation: [
+    "费米推论的核心是'拆解'——别急着猜答案，先想想这个数字由哪几个变量决定。比如估算市场规模，可以拆成：目标人群数量 × 付费比例 × 客单价。每个变量单独估算，最后相乘。",
+    "你估算的结果和直觉差多少？如果差了10倍以上，说明某个变量的假设有问题。费米推论的价值不在精确，而在帮你快速判断方向——是百万级还是千万级？",
+    "试试从身边熟悉的事物做参照。比如你不知道一个市场有多大，但你知道自己小区有500户，每户平均消费多少，然后推算整个城市。这种锚定法比凭空猜靠谱得多。",
+    "记住，费米推论最怕的不是估算不准，而是遗漏关键变量。比如估算收入时忘了考虑复购率，估算成本时忘了考虑边际递减。先列全变量，再逐一估算。",
+    "一个好的费米推论练习：估算你所在城市每天卖出多少杯咖啡。试试拆解变量：人口、咖啡消费人群比例、每人每周几杯、一年多少天。你会发现数量级其实不难估。"
+  ],
+  pareto_principle: [
+    "二八定律的关键动作是'排序'——不排序就谈不上聚焦。先把你所有待办事项列出来，按影响力从大到小排，然后问自己：前20%是哪些？我80%的时间花在哪了？",
+    "很多人误以为二八就是精确的20/80，其实关键是'不对称'——少数因素产生多数结果。在你的场景里，可能是一成的事产生了九成的效果，也可能是三成的事产生了七成的效果。",
+    "二八可以嵌套使用：找到那20%后，再对这20%做二八分析，找到4%的核心。这样你就找到了'核心中的核心'，把有限的精力用在刀刃上。",
+    "警惕一个陷阱：你花时间最多的事，未必是最重要的事。很多人忙了一整天，做的都是紧急但不重要的事。用二八定律重新审视你的时间分配。",
+    "试试这个练习：列出你上周做的所有事，标出哪些产生了最大价值。你会发现，真正重要的事可能只有2-3件，但你可能只花了20%的时间在上面。"
+  ],
+  cost_benefit: [
+    "做成本收益分析时，最容易忽略的是隐性成本——时间、精力、心理负担、机会成本。这些'看不见的成本'往往比金钱成本更大。问自己：做这件事，我放弃了什么？",
+    "收益要分短期和长期来看。很多重要的事短期看不到收益（比如学新技能），但长期回报巨大。别只看眼前，把时间线拉长到1年、3年、5年再评估。",
+    "净收益为正不代表一定要做。还要看风险承受力——最坏情况下你能承受吗？如果最坏结果是'大不了损失几个月时间'，那可以试；如果是'可能倾家荡产'，那就要慎重。",
+    "一个常见的错误是高估短期收益、低估长期成本。比如冲动消费：短期很开心，但长期要还信用卡利息。反过来，健身短期很痛苦，但长期收益巨大。",
+    "试试把你的选项画成表格：左边列成本（短期/长期/隐性），右边列收益（短期/长期/间接），然后给每项打分。你会发现很多'感觉不错'的选项，算下来其实不划算。"
+  ],
+  first_principles: [
+    "第一性原理不是否定一切，而是区分'事实'和'假设'。问自己：我现在的做法里，哪些是因为'别人都这么做'，哪些是因为'物理上只能这么做'？前者是假设，可以挑战。",
+    "好的推导起点是什么？物理定律、数学原理、已验证的实验数据。而不是'行业惯例'、'专家说'、'以前都是这样'。从基本事实出发，重新推导，你可能会发现全新的路径。",
+    "马斯克用第一性原理造火箭：行业说火箭很贵，但他发现原材料成本只有2%。于是他自己造，成本降了90%。这就是打破'行业惯例'假设的力量。",
+    "注意：推导出的方案要能被验证。如果只是'我觉得应该这样'，那不是第一性原理，是空想。好的推导链条每一步都有事实支撑。",
+    "试试对你最根深蒂固的一个信念做第一性原理分析：这是事实还是假设？如果去掉这个假设，世界会怎样？你可能会发现很多'理所当然'其实并不然。"
+  ],
+  five_whys: [
+    "五问法的精髓不在'五次'，而在'层层追问'。根因可能在第三层，也可能在第七层。关键是每一层回答都必须是可验证的原因，而不是猜测或推卸。",
+    "最大的陷阱是'人的问题'——'因为他不认真'不是根因。要继续追问：为什么他不认真？是流程太复杂？激励不够？培训缺失？好的根因通常是系统性的。",
+    "不同人追问可能得出不同根因，这很正常。关键是要交叉验证：多个根因指向同一个系统问题，那大概率就是真正的根因。",
+    "一个好的根因标准：如果修复了这一层，问题就不会再发生。如果修了还会犯，说明还没到根因。",
+    "试试对你最近遇到的一个问题做五问分析。记住：每一层都要问'为什么'，每一层回答都要能验证。到了哪一层，修了就不会再犯？那就是根因。"
+  ],
+  fishbone: [
+    "鱼骨图的五个维度（人、机、料、法、环）是检查清单，不是牢笼。可以根据问题增减维度。关键是确保你从多个角度系统排查，而不是只在熟悉的领域深挖。",
+    "先广度后深度——先把每个维度的可能原因列全，再深挖。很多人一上来就在某个维度深挖，结果忽略了其他维度的关键原因。",
+    "主因通常只有1-2个。列了很多原因不是目的，找到那个'修了就全好了'的主因才是。别让鱼骨图变成'原因展览'。",
+    "鱼骨图的价值在于过程而非结果。系统排查本身就能帮你发现盲区，即使最后没找到主因，排查过程也让你对问题有了更全面的理解。",
+    "试试对你团队最近的一个问题画鱼骨图。从五个维度各列3-5个可能原因，然后评估哪个最可能是主因。你会发现很多之前忽略的角度。"
+  ],
+  pyramid_principle: [
+    "金字塔原理的第一步：先提炼结论。不是先罗列要点再总结，而是先想清楚你要说什么，再用论据支撑。如果结论一句话说不清，说明你还没想清楚。",
+    "每一层都要回答'为什么'或'怎么做'。结论下面是理由，理由下面是证据。如果上下层之间逻辑断裂，读者就会困惑。",
+    "同层论据之间要MECE——相互独立、完全穷尽。如果有重叠，说明分类不清；如果有遗漏，说明思考不全。",
+    "金字塔原理是思维工具也是沟通工具。想清楚才能说清楚。如果你30秒内说不清核心观点，说明你需要用金字塔原理重新组织思路。",
+    "试试对你的下一个汇报用金字塔原理：先说结论，再说3个理由，每个理由配1-2个数据支撑。你会发现表达变得清晰有力。"
+  ],
+  swot: [
+    "SWOT的价值在最后一步——组合策略。很多人列完四个象限就结束了，那只是信息罗列。真正的价值在于：SO策略（进取）、WO策略（补短板）、ST策略（差异化）、WT策略（防守）。",
+    "优势和劣势是内部的，机会和威胁是外部的——不要混淆。'行业在增长'是机会不是优势，'我有5年经验'是优势不是机会。分清内外，才能制定正确策略。",
+    "每项要具体。'有经验'不如'5年行业经验'，'市场大'不如'目标市场200亿规模年增15%'。越具体，策略越可操作。",
+    "SO策略是最理想的——用优势抓住机会。WT策略是最紧迫的——补短板防风险。先做哪类策略取决于你的处境。",
+    "试试对你当前的职业做SWOT分析。列出3-5项优势、劣势、机会、威胁，然后制定SO/WO/ST/WT各一个策略。你会发现思路清晰很多。"
+  ],
+  decision_matrix: [
+    "决策矩阵的关键不在打分，而在权重。权重的分配反映了你的真实优先级。如果你嘴上说'质量最重要'，但权重给了'价格'，那说明你真正在意的是价格。",
+    "打分用1-5分就够了，太精细反而虚假精确。做完矩阵后一定要复盘：结果和直觉一致吗？如果不一致，是直觉错了还是权重/标准有问题？",
+    "决策矩阵是辅助工具，不是替代判断。如果结果明显不合理，检查你的权重和标准，而不是盲从矩阵结果。",
+    "常见的陷阱：为了得到想要的结论而调整权重和分数。这叫'合理化'，不是决策。诚实地设权重，才能得到有价值的参考。",
+    "试试对你最近纠结的一个选择做决策矩阵：列出选项、标准、权重，然后打分。你会发现很多纠结其实是因为没把标准量化。"
+  ],
+  ooda: [
+    "OODA的核心是速度——快速迭代胜过一次完美计划。在不确定环境中，完美信息是不存在的，行动本身就是获取信息的方式。先动起来，再调整。",
+    "判断（Orient）是最关键也最容易被忽略的步骤。很多人从观察直接跳到决策，跳过了'理解信息'这一步。花时间理解你观察到的信息，再做决定。",
+    "每次循环都比上次信息更丰富。第一轮可能是盲目的，但行动后的观察会给你新的信息。这就是为什么快速迭代比完美计划更有效。",
+    "OODA不是只做一轮。很多人行动后就停了，不复盘不迭代。真正的OODA是持续循环：行动→观察→判断→决策→再行动。",
+    "试试对你当前的一个决策用OODA：先观察30秒，判断1分钟，做决定，然后行动。行动后再观察结果，开始新一轮循环。你会发现决策速度大幅提升。"
+  ],
+  regret_minimization: [
+    "后悔最小化的核心是：人通常对'没做的事'比'做错的事'更后悔。想象自己80岁回看现在，你会后悔没做哪个选择？那个就是你应该选的。",
+    "这个框架适合重大人生选择（职业、关系、城市），不适合日常小事。不是每个决定都要用后悔最小化——那会导致冲动决策。",
+    "后悔最小化不是快乐最大化。有些选择短期痛苦但长期无悔（比如艰苦的创业），有些短期快乐但长期后悔（比如放弃梦想）。",
+    "选择后要配套风险管理。后悔最小化不是赌上一切——选了想选的路，同时制定降低风险的措施。这样即使失败，也不会后悔当初的选择。",
+    "试试对你最纠结的一个选择用后悔最小化：想象10年后回头看，不做会后悔吗？如果答案是'会'，那就去做，同时想好风险控制。"
+  ],
+  mece: [
+    "MECE是检查清单不是目的。为了分类而分类是浪费时间——分类的目的是指导行动。如果拆解后不知道该怎么办，说明拆解方式有问题。",
+    "好的拆解维度取决于问题本身。常见维度：时间（过去/现在/未来）、空间（区域/部门）、流程（研发/生产/销售）、对象（用户/员工/合作伙伴）。",
+    "MECE的难点在'完全穷尽'——总有你想不到的角落。一个技巧：先按主要维度拆，然后专门留一个'其他'类别，强迫自己想还有什么遗漏。",
+    "相互独立比完全穷尽容易做到。检查重叠：如果一件事同时属于两个类别，说明分类标准不清晰。检查遗漏：如果有些事哪个类别都放不进去，说明有盲区。",
+    "试试对你当前的一个复杂问题做MECE拆解。选一个维度，拆成3-5个部分，然后检查：有重叠吗？有遗漏吗？换个维度拆会不会更清晰？"
+  ],
+  feedback_loop: [
+    "增强回路导致指数增长或衰退——早期干预很重要。如果你发现一个正反馈在跑，要判断它是好事还是坏事。好事要加速，坏事要尽早打断。",
+    "平衡回路维持稳定，但也可能导致停滞。如果你感觉'怎么努力都没变化'，可能是有平衡回路在起作用。找到它，才能突破。",
+    "大多数系统同时存在增强和平衡回路。关键是判断哪个在主导。增长期是增强回路主导，成熟期是平衡回路主导，衰退期是反向增强回路主导。",
+    "干预系统要找杠杆点——最小努力最大效果。不是所有变量都值得干预，找到那个'牵一发动全身'的关键点。",
+    "试试对你身边的一个现象画反馈回路：哪些变量在相互影响？是增强还是平衡？杠杆点在哪？你会发现很多看似复杂的现象，底层逻辑其实很简单。"
+  ],
+  iceberg_model: [
+    "冰山模型四层：事件→模式→结构→心智模型。事件是冰山一角，同样的表面事件可能有完全不同的深层原因。不要从单一事件就推断深层原因。",
+    "模式需要时间观察。一次事件不能叫模式，反复出现才叫模式。如果你发现同样的事情反复发生，那背后一定有结构在支撑。",
+    "结构是规则、流程、资源分配方式——是可以改变的。如果你找到了产生问题的结构，你就找到了改变的可能。",
+    "心智模型是最深层也是最难改变的——但改变它效果最大。如果驱动结构的心智模型不变，换了结构也会回到老样子。",
+    "试试对你反复遇到的一个问题用冰山模型：表面事件是什么？反复出现的模式是什么？支撑模式的结构是什么？驱动结构的心智模型是什么？到了哪一层，改变才有效？"
+  ],
+  second_order: [
+    "二阶思维的核心是追问'然后呢？'。每个行动都有直接结果（一阶），也有后续影响（二阶、三阶）。好的决策不仅要看直接结果，还要看后续影响。",
+    "二阶效应往往和一阶效应方向相反——短期好处长期代价。比如：短期放松很爽（一阶），长期身体变差（二阶）。反过来，短期辛苦（一阶），长期受益（二阶）。",
+    "不需要无限追问，通常到三阶就够了。但一定要至少追问到二阶——只看一阶效应做决定，是很多糟糕决策的根源。",
+    "二阶思维不是犹豫不决，而是更全面地评估后再行动。想清楚后续影响，反而能让你更果断地做决定。",
+    "试试对你最近做的一个决定做二阶分析：直接结果是什么？然后呢？再然后呢？你会发现很多之前没考虑到的后果。"
+  ],
+  reverse_thinking: [
+    "逆向思维不是唱反调，而是补盲区。正向思考容易忽略风险和失败可能，逆向思维帮你看到这些盲区，然后反向预防。",
+    "查理·芒格的名言：'反过来想，总是反过来想。'与其想怎么成功，不如想怎么避免失败。失败原因往往比成功路径更容易列举。",
+    "试试问自己：怎样做才能确保失败？列出所有失败方式，然后反向操作——这就是你的行动方案。你会发现很多正向思考容易忽略的风险。",
+    "逆向思维和正向思维结合使用效果最好。先用正向思维规划路径，再用逆向思维检查盲区。两者互补，决策更全面。",
+    "试试对你当前的目标做逆向分析：如果彻底失败了，最可能是什么原因？现在就针对这些原因制定预防措施。"
+  ],
+  analogical_reasoning: [
+    "类比的关键是结构相似而非表面相似。'看起来像'不等于'结构相同'。好的类比是：问题的因果结构相同，只是领域不同。",
+    "跨领域类比是创新的重要来源。很多突破来自跨界借鉴：飞机借鉴了鸟的空气动力学，丰田生产方式借鉴了超市的补货逻辑。",
+    "类比后一定要验证——不同领域的关键差异可能导致方案失效。借鉴了方法，还要检查两个领域的差异点，做适配调整。",
+    "找类比时，先分析你问题的核心结构：是资源分配问题？是信息不对称问题？是激励问题？然后去找其他领域有相似结构的问题。",
+    "试试对你当前的问题找类比：核心结构是什么？哪些其他领域有相似结构？那个领域的解决方案是什么？需要怎样调整？"
+  ],
+  six_thinking_hats: [
+    "六顶思考帽的价值在于系统覆盖：事实（白帽）、情绪（红帽）、风险（黑帽）、收益（黄帽）、创意（绿帽）、总结（蓝帽）。确保每个角度都被充分讨论。",
+    "红帽允许非理性——直觉也是重要信息。很多人忽略直觉，觉得'不理性所以不重要'。但直觉往往是经验的快速提炼，值得认真对待。",
+    "黑帽和黄帽不要连着戴。先看风险再看收益，或者先看收益再看风险，都可以。但不要同时戴，否则思维会混乱。",
+    "蓝帽是主持人——确保每顶帽子都得到充分表达，而不是每顶只说一两句就结束。深度比广度更重要。",
+    "试试对你最近的一个决定用六顶思考帽：白帽（事实是什么？）、红帽（我的直觉感受？）、黑帽（风险？）、黄帽（机会？）、绿帽（创新方案？）、蓝帽（总结行动？）。"
+  ],
+  scamper: [
+    "SCAMPER七种操作：替代、合并、调整、修改、他用、消除、重排。不需要七种都用——选2-3种最相关的深入思考。",
+    "消除往往被低估——去掉不必要的东西本身就是创新。想想iPhone去掉了物理键盘，反而开创了智能手机时代。少即是多。",
+    "每种操作都要追问'这会带来什么新价值'。如果替代了但没带来新价值，那只是变化不是创新。价值是检验创新的唯一标准。",
+    "SCAMPER适合渐进式创新，不适合颠覆式创新。如果你需要的是微调优化，SCAMPER很好用。如果需要的是范式转变，可能需要第一性原理。",
+    "试试对你常用的一个产品或流程用SCAMPER：能替代什么？能合并什么？能去掉什么？你会发现很多改进机会就在眼前。"
+  ],
+  stakeholder_map: [
+    "利益不只是金钱——面子、权力、安全感、控制感都是利益。分析利益相关者时，要考虑他们的全部利益诉求，而不仅仅是经济利益。",
+    "权力不只是职位——信息、关系、专业能力都是权力。有时候一个没有职位的人，因为掌握关键信息或关系，反而最有影响力。",
+    "中立者可能被拉拢——不要忽略他们。在利益博弈中，中立者往往是决定胜负的关键。主动沟通中立者，比和反对者死磕更有效。",
+    "沟通策略因人而异：对支持者巩固共识，对反对者化解顾虑，对中立者争取支持。一刀切的沟通方式是最常见的错误。",
+    "试试对你当前的一个决策画利益相关者地图：谁会受益？谁会受损？谁有决定权？然后制定针对性的沟通策略。"
+  ],
+  perspective_taking: [
+    "换位思考是理解不是认同——理解对方为什么这样做，不等于同意他这样做。理解是为了找到更好的应对方式，不是为了妥协。",
+    "关注对方的处境而非性格。'他为什么这样做'比'他是什么人'更有用。处境改变了，行为也会改变。理解处境，才能找到改变行为的杠杆。",
+    "真正的换位思考需要信息——不要凭想象。如果你不确定对方怎么想，最好的方式是直接去了解。猜测往往比真实情况更极端。",
+    "换位思考的终点是找到双赢方案。理解了对方的需求和顾虑，才能设计既满足自己又照顾对方的方案。单方面妥协不是换位思考的结果。",
+    "试试对你最近和某人的冲突做换位思考：他的核心目标是什么？他面临什么压力？他有什么顾虑？基于理解，我该如何应对？"
+  ],
+  growth_mindset: [
+    "成长型思维不是'只要努力就能成功'——方法比努力更重要。用错误的方法坚持，只会越走越远。关键是找到正确的提升路径。",
+    "'暂时做不到'是事实，'永远做不到'是判断——不要混淆。大部分技能都是可以通过练习提升的，区别在于方法和时间。",
+    "具体的提升计划比空喊'我能行'有效一百倍。不是'我要变得更好'，而是'我每天花30分钟练习这个具体技能，每周请导师反馈一次'。",
+    "成长型思维需要配合反馈——没有反馈的练习只是重复。找一个能给你真实反馈的人，比独自苦练有效十倍。",
+    "试试对你最想提升的一个能力做成长型思维分析：具体哪个部分可以提升？谁擅长这个？我能向他学什么？我怎样获得真实反馈？"
+  ],
+  zhongyong: [
+    "中庸不是和稀泥——是找到真正兼顾各方核心利益的方案。和稀泥是各打五十大板，中庸是找到双方都能接受的'第三条路'。",
+    "中庸的关键是区分'核心诉求'和'立场表达'。立场可以妥协，核心诉求不能。很多时候双方立场对立，但核心诉求并不冲突。",
+    "好的中庸方案让每方都觉得'不是最理想但可以接受'。如果一方完全满意另一方完全不满意，那不是中庸，是一方妥协。",
+    "中庸需要创造力——不是简单取中间值。有时候需要跳出两个选项，找到全新的第三种方案，同时满足双方的核心诉求。",
+    "试试对你最近的一个两难选择做中庸分析：两方的核心诉求分别是什么？有没有同时满足双方核心诉求的第三种方案？"
+  ],
+  guanxi: [
+    "关系思维不是走后门——是理解社会网络如何运作。在任何组织里，理解谁有影响力、信息怎么流动、决策怎么做出，都是基本能力。",
+    "关键人物不只是领导——信息枢纽（谁消息最灵通）、意见领袖（谁说话最有分量）同样重要。有时候影响关键人物比影响领导更有效。",
+    "关系是双向的——你能给别人提供什么价值？只索取不付出的关系不可持续。先想你能贡献什么，再想你能获得什么。",
+    "关系思维要和规则思维结合——不能只讲人情不看规则。最好的方式是在规则框架内经营关系，既合规又高效。",
+    "试试对你当前的一个决策做关系分析：谁是关键人物？他们之间的关系是什么？谁的信息最灵通？你能为这个网络提供什么价值？"
+  ],
+  face_cost: [
+    "面子成本是真实的社会成本——忽略它会导致执行阻力。即使你的方案在逻辑上最优，如果让关键人物丢面子，执行起来也会困难重重。",
+    "给台阶不是虚伪——是尊重他人的社会性需求。面子不只是'被批评'，被忽视、被绕过、在公开场合被否定，都会丢面子。",
+    "有时候面子成本高到需要调整方案——这是务实不是软弱。如果原方案的面子成本超过收益，调整方案比硬推更明智。",
+    "减少面子成本的方法：私下沟通而非公开批评、给对方选择权而非强制执行、用'建议'而非'要求'的措辞。细节决定成败。",
+    "试试对你最近的一个方案做面子成本分析：谁的面子会受损？怎样给台阶？面子成本和实际收益相比，值得吗？"
+  ],
+  big_picture: [
+    "大局观不是空谈格局——是具体的取舍判断。知道'放弃什么'比知道'追求什么'更能体现大局观。什么都想要，最后什么都得不到。",
+    "全局目标要具体——'做大做强'不是好目标，'3年内营收翻倍'才是。目标越具体，取舍越容易判断。",
+    "局部损失要配套补偿——不能只要求别人牺牲。如果你要砍掉某个项目，要想好怎么补偿受影响的团队，否则执行阻力会很大。",
+    "大局观最怕变成道德绑架——'你要顾全大局'不能成为压制合理诉求的借口。真正的大局观是让每个人理解为什么这样取舍。",
+    "试试对你当前纠结的一个局部问题做大局观分析：全局目标是什么？这个局部在全局中占多大比重？放弃它全局会怎样？怎样补偿局部损失？"
+  ],
+  timing: [
+    "时机不是等来的——是准备+判断+行动的结果。'等时机'和'做准备'是两回事。等是被动，准备是主动。在等待的同时做好一切准备，时机到了才能抓住。",
+    "窗口期有宽度——不是'现在或永远不'。但窗口会关闭，所以要有时间紧迫感。评估窗口还有多宽，给自己设一个deadline。",
+    "阻力大不代表不该做——可能需要调整方式而非放弃。有时候换个时间、换个方式、换个切入点，阻力就会小很多。",
+    "时机思维最怕变成拖延的借口——'等时机成熟'和'不敢行动'是两回事。区分的方法：你是在做准备，还是在逃避？",
+    "试试对你犹豫要不要做的一件事做时机分析：大趋势有利吗？窗口期还有多宽？阻力是什么？能化解吗？如果现在不做，以后会更难还是更容易？"
+  ],
+  gray_cognition: [
+    "灰度不是没有立场——是在不确定中选择概率最大的方向。'都行'不是灰度，是没思考。灰度认知是有判断的，只是承认判断有不确定性。",
+    "保留余地不是犹豫不决——是为新信息留出调整空间。好的灰度决策是：方向明确，路径灵活。知道往哪走，但随时准备调整路线。",
+    "灰度认知需要区分'不确定'和'不知道'。'不确定'是有概率判断（我觉得70%概率会成功），'不知道'是没有判断（我完全没概念）。前者可以做决策，后者需要先获取信息。",
+    "动态修正是灰度认知的核心——新信息到来时要敢于调整。最怕的是'一条路走到黑'，明明信息变了，判断不变。",
+    "试试对你当前不确定的一个问题做灰度认知分析：确定的部分是什么？不确定的部分是什么？各选项的概率是多少？如果我选错了，怎样最快发现和修正？"
+  ],
+  black_swan: [
+    "黑天鹅思维不是天天担心极端——是确保极端发生时不会致命。关注的是'冲击×概率'——极小概率但致命的事件需要防范。",
+    "预留方案的成本要合理——不能为1%的概率花90%的资源。关键是找到那些'发生了就翻不了身'的极端事件，重点防范。",
+    "区分'可保险的'和'不可保险的'。可保险的买保险（比如财产险），不可保险的建韧性（比如多元收入来源、持续学习能力）。",
+    "不要只关注已知的小概率事件——真正的黑天鹅是你没想到的。建立韧性比预测具体风险更有效。韧性意味着：不管发生什么，你都能恢复。",
+    "试试对你的人生做黑天鹅分析：有什么极端事件会让你彻底翻不了身？这些事件的概率虽低，但发生了你能承受吗？预留方案的成本是多少？值得吗？"
+  ],
+  antifragile: [
+    "反脆弱不是坚强——坚强是承受冲击不变，反脆弱是冲击后更强。区别在于：坚强是'扛住了'，反脆弱是'变强了'。",
+    "反脆弱的核心是'凸性'——收益无限、损失有限。投资100块最多亏100，但可能赚1000，这就是凸性。寻找凸性机会，避免凹性风险。",
+    "小规模试错是反脆弱的实践方式——用小损失获取大信息。每次试错成本可控，但可能发现大机会。试100次，99次小亏，1次大赚。",
+    "杠铃策略：90%极度安全+10%极度冒险，避免中等风险。中等风险既不够安全又不够有想象力，是最差的选择。",
+    "试试对你当前的结构做反脆弱分析：是脆弱的、坚强的还是反脆弱的？怎样让冲击成为你的机会？你的损失下限在哪里？怎样控制它？"
+  ],
+  scenario_planning: [
+    "情景规划不是预测——是让你在不同未来都有准备。不要押注单一预测，而是为多种可能都准备预案。这样不管未来怎样，你都不会措手不及。",
+    "好的情景之间差异要大——覆盖最好、最坏和最可能。如果三个情景差不多，说明你的想象力不够，本质上还是只准备了一种未来。",
+    "预警信号比情景本身更重要——它告诉你哪种情景正在发生。为每种情景设计2-3个预警指标，一旦触发就启动对应预案。",
+    "通用策略是情景规划的精华——不管未来怎样都有用的策略。找到这些策略优先执行，它们是你在任何未来都不会后悔的投资。",
+    "试试对你最不确定的一个问题做情景规划：最大的不确定性是什么？最好、最坏、最可能的未来分别是什么？什么信号告诉你哪种情景正在发生？有没有不管哪种情景都有用的策略？"
+  ],
+  margin_of_safety: [
+    "安全边际的大小取决于错误的代价——代价越大边际越要大。如果最坏情况只是损失几个月时间，边际可以小一些；如果可能倾家荡产，边际要很大。",
+    "安全边际不是浪费——是保险费。你不会因为买了保险就说浪费，同样，预留余量也不是浪费，是为你可能犯错买的保险。",
+    "关键资源通常只有1-2个——找出它们重点预留。不是所有资源都需要大边际，找到那个'缺了就致命'的关键资源，重点预留。",
+    "安全边际要动态调整——环境变化时边际也要变。经济好的时候边际可以小一些，经济差的时候边际要大一些。定期检查你的边际是否还充足。",
+    "试试对你当前最重要的一个计划做安全边际分析：最坏情况下需要多少资源？现在的余量够吗？哪个资源的短缺最致命？预留的边际成本合理吗？"
+  ]
+};
+
+function getCoachingResponse(frameworkId, messageIndex) {
+  const responses = COACHING_RESPONSES[frameworkId];
+  if (!responses || responses.length === 0) {
+    return "这是一个很好的问题。让我从思维框架的角度帮你分析一下——关键是要找到问题的结构，然后选择合适的框架来拆解它。";
+  }
+  return responses[messageIndex % responses.length];
+}
+
+function app() {
+  return {
+    currentPage: 'analyze',
+    apiKey: '',
+    apiBaseUrl: 'https://api.deepseek.com',
+    showApiKey: false,
+    showSettings: false,
+    mode: 'learning',
+    question: '',
+    isAnalyzing: false,
+    analyzeStep: '',
+    streamInterrupted: false,
+    report: '',
+    reportHtml: '',
+    diagnosis: null,
+    clarifyingQuestions: [],
+    clarificationAnswers: [],
+    additionalInfo: '',
+    showClarification: false,
+    librarySearch: '',
+    libraryCategory: '全部',
+    selectedFramework: null,
+    showFrameworkDetail: false,
+    showFrameworkQuestion: false,
+    frameworkQuestionInput: '',
+    history: [],
+    selectedHistory: null,
+    showHistoryDetail: false,
+    errorMessage: '',
+    isOnline: navigator.onLine,
+    categories: CATEGORIES,
+    frameworks: FRAMEWORKS,
+    chatMessages: [],
+    chatInput: '',
+    chatTyping: false,
+    chatResponseIndex: 0,
+
+    init() {
+      this.apiKey = localStorage.getItem('thinkbridge_api_key') || '';
+      const settings = localStorage.getItem('thinkbridge_settings');
+      if (settings) {
+        try { const s = JSON.parse(settings); this.mode = s.mode || 'learning'; this.apiBaseUrl = s.apiBaseUrl || 'https://api.deepseek.com'; } catch(e) {}
+      }
+      this.loadHistory();
+      window.addEventListener('online', () => { this.isOnline = true; });
+      window.addEventListener('offline', () => { this.isOnline = false; });
+    },
+
+    saveApiKey() {
+      try { localStorage.setItem('thinkbridge_api_key', this.apiKey); } catch(e) {}
+    },
+
+    saveSettings() {
+      try { localStorage.setItem('thinkbridge_settings', JSON.stringify({ mode: this.mode, apiBaseUrl: this.apiBaseUrl })); } catch(e) {}
+    },
+
+    setMode(m) {
+      this.mode = m;
+      this.saveSettings();
+    },
+
+    async submitClarification() {
+      // 将追问回答和补充信息拼接到原始问题中
+      let extraInfo = '';
+      this.clarifyingQuestions.forEach((q, i) => {
+        const answer = (this.clarificationAnswers[i] || '').trim();
+        if (answer) {
+          extraInfo += `\n关于"${q}"：${answer}`;
+        }
+      });
+      if (this.additionalInfo.trim()) {
+        extraInfo += `\n补充信息：${this.additionalInfo.trim()}`;
+      }
+      if (!extraInfo) {
+        this.showError('请至少回答一个问题或补充信息');
+        return;
+      }
+      // 追加到原始问题
+      this.question = this.question.trim() + extraInfo;
+      // 关闭追问面板，重新分析
+      this.showClarification = false;
+      this.clarifyingQuestions = [];
+      this.clarificationAnswers = [];
+      this.additionalInfo = '';
+      await this.analyze();
+    },
+
+    get filteredFrameworks() {
+      let result = this.frameworks;
+      if (this.libraryCategory !== '全部') {
+        result = result.filter(f => f.category === this.libraryCategory);
+      }
+      if (this.librarySearch.trim()) {
+        const q = this.librarySearch.trim().toLowerCase();
+        result = result.filter(f =>
+          f.name.toLowerCase().includes(q) ||
+          f.summary.toLowerCase().includes(q) ||
+          f.category.toLowerCase().includes(q) ||
+          f.solves.toLowerCase().includes(q)
+        );
+      }
+      return result;
+    },
+
+    async analyze() {
+      if (!this.apiKey.trim()) {
+        this.showError('请先填写 DeepSeek API Key');
+        return;
+      }
+      if (!this.isOnline) {
+        this.showError('当前离线，无法进行分析');
+        return;
+      }
+      if (this.question.trim().length < 5) {
+        this.showError('问题信息较少，建议补充背景、目标和限制条件');
+        return;
+      }
+      this.isAnalyzing = true;
+      this.report = '';
+      this.reportHtml = '';
+      this.streamInterrupted = false;
+      this.showClarification = false;
+      this.clarifyingQuestions = [];
+      this.clarificationAnswers = [];
+      this.additionalInfo = '';
+      this.diagnosis = null;
+      this.analyzeStep = 'routing';
+
+      try {
+        const diagnosis = await this.callRouter();
+        if (!diagnosis) {
+          this.isAnalyzing = false;
+          this.analyzeStep = '';
+          return;
+        }
+        this.diagnosis = diagnosis;
+
+        if (diagnosis.status === 'need_more_info' && diagnosis.clarifying_questions && diagnosis.clarifying_questions.length > 0) {
+          this.clarifyingQuestions = diagnosis.clarifying_questions;
+          this.showClarification = true;
+          this.isAnalyzing = false;
+          this.analyzeStep = '';
+          return;
+        }
+
+        this.analyzeStep = 'analyzing';
+        await this.callAnalyzer(diagnosis);
+      } catch (e) {
+        this.showError(e.message || '分析过程出错');
+      } finally {
+        this.isAnalyzing = false;
+        this.analyzeStep = '';
+      }
+    },
+
+    async callRouter() {
+      const prompt = ROUTER_PROMPT
+        .replace('{{FRAMEWORK_SUMMARY_LIST}}', buildFrameworkSummaryList())
+        .replace('{{REALITY_FILTER_TRIGGERS}}', buildRealityFilterTriggers());
+
+      let response;
+      try {
+        response = await fetch((this.apiBaseUrl || 'https://api.deepseek.com').replace(/\/+$/, '') + '/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.apiKey.trim()}`
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              { role: 'system', content: prompt },
+              { role: 'user', content: this.question }
+            ],
+            temperature: 0.3,
+            response_format: { type: 'json_object' }
+          })
+        });
+      } catch (e) {
+        this.showError('请求失败，请检查网络连接');
+        return null;
+      }
+
+      if (response.status === 401) {
+        this.showError('认证失败，请检查 API Key 是否正确');
+        return null;
+      }
+      if (response.status === 402 || response.status === 429) {
+        this.showError('DeepSeek 返回额度错误，请检查账户余额');
+        return null;
+      }
+      if (!response.ok) {
+        this.showError(`请求失败 (${response.status})`);
+        return null;
+      }
+
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content || '';
+
+      return this.parseRouterJSON(text);
+    },
+
+    parseRouterJSON(text) {
+      try {
+        return JSON.parse(text);
+      } catch(e) {}
+
+      try {
+        const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+        if (codeBlockMatch) {
+          return JSON.parse(codeBlockMatch[1].trim());
+        }
+      } catch(e) {}
+
+      try {
+        const braceMatch = text.match(/\{[\s\S]*\}/);
+        if (braceMatch) {
+          return JSON.parse(braceMatch[0]);
+        }
+      } catch(e) {}
+
+      const questionLower = this.question.toLowerCase();
+      let problemType = 'decision';
+      if (/为什么|原因|怎么回事|为什么/.test(questionLower)) problemType = 'root-cause';
+      else if (/未来|趋势|会怎样|前景/.test(questionLower)) problemType = 'future';
+      else if (/怎么做|方案|步骤|计划/.test(questionLower)) problemType = 'action-plan';
+      else if (/关系|沟通|同事|领导|朋友|家人/.test(questionLower)) problemType = 'interpersonal';
+      else if (/职业|工作|转行|辞职|跳槽|人生/.test(questionLower)) problemType = 'career';
+      else if (/创新|突破|新|改进|优化/.test(questionLower)) problemType = 'innovation';
+
+      const defaultFws = DEFAULT_FRAMEWORK_MAP[problemType] || DEFAULT_FRAMEWORK_MAP['decision'];
+
+      const matchedFilters = REALITY_FILTERS.filter(f =>
+        f.trigger_scenarios.some(t => questionLower.includes(t))
+      ).map(f => f.id);
+
+      return {
+        status: 'ready',
+        needs_clarification: false,
+        clarifying_questions: [],
+        problem_type: problemType,
+        problem_subtype: '',
+        selected_frameworks: defaultFws,
+        validation_frameworks: [],
+        reality_filters: matchedFilters,
+        reason: '基于问题关键词的默认匹配'
+      };
+    },
+
+    async callAnalyzer(diagnosis) {
+      const allFrameworkIds = [...(diagnosis.selected_frameworks || []), ...(diagnosis.validation_frameworks || [])];
+      const frameworkDetails = buildFrameworkDetails(allFrameworkIds);
+      const realityFilterDetails = buildRealityFilterDetails(diagnosis.reality_filters || []);
+
+      const systemPrompt = (this.mode === 'learning' ? LEARNING_ANALYZER_PROMPT : QUICK_ANALYZER_PROMPT)
+        .replace('{{SELECTED_FRAMEWORKS_DETAILS}}', frameworkDetails)
+        .replace('{{SELECTED_REALITY_FILTERS}}', realityFilterDetails);
+
+      let response;
+      try {
+        response = await fetch((this.apiBaseUrl || 'https://api.deepseek.com').replace(/\/+$/, '') + '/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.apiKey.trim()}`
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: this.question }
+            ],
+            temperature: 0.5,
+            stream: true
+          })
+        });
+      } catch (e) {
+        this.showError('请求失败，请检查网络连接');
+        return;
+      }
+
+      if (response.status === 401) {
+        this.showError('认证失败，请检查 API Key 是否正确');
+        return;
+      }
+      if (response.status === 402 || response.status === 429) {
+        this.showError('DeepSeek 返回额度错误，请检查账户余额');
+        return;
+      }
+      if (!response.ok) {
+        this.showError(`请求失败 (${response.status})`);
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = '';
+      let renderTimer = null;
+
+      const renderReport = () => {
+        try {
+          this.reportHtml = marked.parse(accumulated);
+        } catch(e) {
+          this.reportHtml = accumulated.replace(/\n/g, '<br>');
+        }
+      };
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') continue;
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content || '';
+                if (content) {
+                  accumulated += content;
+                  this.report = accumulated;
+                  if (!renderTimer) {
+                    renderTimer = setTimeout(() => {
+                      renderReport();
+                      renderTimer = null;
+                    }, 150);
+                  }
+                }
+              } catch(e) {}
+            }
+          }
+        }
+      } catch(e) {
+        if (accumulated) {
+          this.streamInterrupted = true;
+          this.report = accumulated + '\n\n⚠️ 生成被中断';
+        }
+      }
+
+      if (renderTimer) clearTimeout(renderTimer);
+      renderReport();
+
+      if (this.report) {
+        await this.saveToHistory();
+      }
+    },
+
+    viewFramework(fw) {
+      this.selectedFramework = fw;
+      this.showFrameworkDetail = true;
+      this.chatMessages = [];
+      this.chatInput = '';
+      this.chatResponseIndex = 0;
+      this.chatTyping = false;
+      // Add initial AI greeting
+      this.chatMessages.push({
+        role: 'ai',
+        text: `你好！我是${fw.name}的AI教练。关于这个框架，你有什么想了解的？可以问我怎么用、什么时候用、或者直接告诉我你的问题，我帮你用这个框架分析。`
+      });
+      this.$nextTick(() => {
+        this.scrollChatToBottom();
+      });
+    },
+
+    closeDrawer() {
+      this.showFrameworkDetail = false;
+    },
+
+    sendChat() {
+      const input = this.chatInput.trim();
+      if (!input) return;
+      this.chatMessages.push({ role: 'user', text: input });
+      this.chatInput = '';
+      this.chatTyping = true;
+      this.scrollChatToBottom();
+
+      const fwId = this.selectedFramework?.id;
+      const idx = this.chatResponseIndex;
+
+      setTimeout(() => {
+        this.chatTyping = false;
+        const response = getCoachingResponse(fwId, idx);
+        this.chatMessages.push({ role: 'ai', text: response });
+        this.chatResponseIndex++;
+        this.$nextTick(() => {
+          this.scrollChatToBottom();
+        });
+      }, 800);
+    },
+
+    scrollChatToBottom() {
+      const el = this.$refs.chatArea;
+      if (el) {
+        el.scrollTop = el.scrollHeight;
+      }
+    },
+
+    useFramework(fw) {
+      this.selectedFramework = fw;
+      this.showFrameworkQuestion = true;
+    },
+
+    confirmFrameworkUse() {
+      const fw = this.selectedFramework;
+      const q = (this.frameworkQuestionInput || '').trim();
+      this.question = `请重点使用【${fw.name}】分析：${q}`;
+      this.currentPage = 'analyze';
+      this.showFrameworkDetail = false;
+      this.showFrameworkQuestion = false;
+      this.frameworkQuestionInput = '';
+    },
+
+    cancelFrameworkUse() {
+      this.showFrameworkQuestion = false;
+      this.frameworkQuestionInput = '';
+    },
+
+    async loadHistory() {
+      try {
+        if (typeof localforage !== 'undefined') {
+          const data = await localforage.getItem('thinkbridge_history');
+          this.history = data || [];
+        } else {
+          const data = localStorage.getItem('thinkbridge_history');
+          this.history = data ? JSON.parse(data) : [];
+        }
+      } catch(e) {
+        try {
+          const data = localStorage.getItem('thinkbridge_history');
+          this.history = data ? JSON.parse(data) : [];
+        } catch(e2) {
+          this.history = [];
+        }
+      }
+    },
+
+    async saveToHistory() {
+      const frameworkNames = [];
+      if (this.diagnosis) {
+        const allIds = [...(this.diagnosis.selected_frameworks || []), ...(this.diagnosis.validation_frameworks || [])];
+        allIds.forEach(id => {
+          const fw = getFrameworkById(id);
+          if (fw) frameworkNames.push(fw.name);
+        });
+      }
+
+      const item = {
+        id: Date.now().toString(),
+        date: new Date().toLocaleString('zh-CN'),
+        question: this.question,
+        frameworks: frameworkNames,
+        report: this.report,
+        reportHtml: this.reportHtml,
+        mode: this.mode
+      };
+
+      this.history.unshift(item);
+
+      try {
+        if (typeof localforage !== 'undefined') {
+          await localforage.setItem('thinkbridge_history', this.history);
+        } else {
+          localStorage.setItem('thinkbridge_history', JSON.stringify(this.history));
+        }
+      } catch(e) {
+        try {
+          localStorage.setItem('thinkbridge_history', JSON.stringify(this.history));
+        } catch(e2) {}
+      }
+    },
+
+    async deleteHistory(id) {
+      this.history = this.history.filter(h => h.id !== id);
+      try {
+        if (typeof localforage !== 'undefined') {
+          await localforage.setItem('thinkbridge_history', this.history);
+        } else {
+          localStorage.setItem('thinkbridge_history', JSON.stringify(this.history));
+        }
+      } catch(e) {
+        try {
+          localStorage.setItem('thinkbridge_history', JSON.stringify(this.history));
+        } catch(e2) {}
+      }
+    },
+
+    async clearHistory() {
+      if (!confirm('确定要清空所有历史记录吗？')) return;
+      this.history = [];
+      try {
+        if (typeof localforage !== 'undefined') {
+          await localforage.removeItem('thinkbridge_history');
+        } else {
+          localStorage.removeItem('thinkbridge_history');
+        }
+      } catch(e) {
+        try { localStorage.removeItem('thinkbridge_history'); } catch(e2) {}
+      }
+    },
+
+    viewHistory(item) {
+      this.selectedHistory = item;
+      this.showHistoryDetail = true;
+    },
+
+    copyReport() {
+      const text = this.report;
+      this.copyText(text);
+    },
+
+    copyHistoryReport() {
+      const text = this.selectedHistory?.report || '';
+      this.copyText(text);
+    },
+
+    copyText(text) {
+      if (!text) return;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          this.showError('已复制到剪贴板');
+        }).catch(() => {
+          this.fallbackCopyText(text);
+        });
+      } else {
+        this.fallbackCopyText(text);
+      }
+    },
+
+    fallbackCopyText(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        this.showError('已复制到剪贴板');
+      } catch(e) {
+        this.showError('复制失败，请手动复制');
+      }
+      document.body.removeChild(textarea);
+    },
+
+    showError(msg) {
+      this.errorMessage = msg;
+      setTimeout(() => { this.errorMessage = ''; }, 4000);
+    }
+  };
+}
+
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE_NAME = 'thinkbridge-v1';
+    const CDN_CACHE = 'thinkbridge-cdn-v1';
+    const CDN_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.tailwindcss.com', 'cdn.jsdelivr.net'];
+
+    self.addEventListener('install', e => {
+      self.skipWaiting();
+    });
+
+    self.addEventListener('activate', e => {
+      e.waitUntil(
+        caches.keys().then(keys =>
+          Promise.all(keys.filter(k => k !== CACHE_NAME && k !== CDN_CACHE).map(k => caches.delete(k)))
+        )
+      );
+      self.clients.claim();
+    });
+
+    self.addEventListener('fetch', e => {
+      const url = new URL(e.request.url);
+
+      if (CDN_HOSTS.some(h => url.hostname.includes(h))) {
+        e.respondWith(
+          caches.open(CDN_CACHE).then(cache =>
+            cache.match(e.request).then(cached => {
+              if (cached) return cached;
+              return fetch(e.request).then(response => {
+                if (response.ok) cache.put(e.request, response.clone());
+                return response;
+              });
+            })
+          )
+        );
+        return;
+      }
+
+      if (e.request.mode === 'navigate' || (e.request.method === 'GET' && url.pathname.endsWith('.html'))) {
+        e.respondWith(
+          fetch(e.request).catch(() => caches.match(e.request).then(r => r || caches.match('/')))
+        );
+        return;
+      }
+
+      e.respondWith(
+        fetch(e.request).then(response => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+          }
+          return response;
+        }).catch(() => caches.match(e.request))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+</script>
+</body>
+</html>
