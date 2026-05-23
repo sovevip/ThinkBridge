@@ -10,11 +10,16 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ThinkBridge">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIHJ4PSIyNCIgZmlsbD0iI0ZBRjhGNSIvPjx0ZXh0IHg9Ijk2IiB5PSIxMTAiIGZvbnQtc2l6ZT0iODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNDNUEwNTkiIGZvbnQtZmFtaWx5PSJzZXJpZiI+5YikPC90ZXh0Pjwvc3ZnPg==">
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiVGhpbmtCcmlkZ2UiLCJzaG9ydF9uYW1lIjoiVGhpbmtCcmlkZ2UiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI0ZBRjhGNSIsInRoZW1lX2NvbG9yIjoiI0M1QTA1OSIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUIyYVdWM1FtOTRQU0l3SURBZ01UQXdJREV3TUNJZ2VHMXNibk05SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpJd01EQXZjM1puSWo0OFkybHlZMnhsSUdONFBTSTJOQ0lnWTNrOUlqVXdJaUJ5UFNJME9DSWdabWxzYkQwaUl6aGlOV05tTmlJdlBqeDBaWGgwSUhnOUlqVXdJaUI1UFNJMU9DSWdabTl1ZEMxemFYcGxQU0l6TUNJZ1ptbHNiRDBpZDJocGRHVWlJSFJsZUhRdFlXNWphRzl5UFNKdGFXUmtiR1VpSUdadmJuUXRkMlZwWjJoMFBTSTVNREFpUGt4Q1BDOTBaWGgwUGp3dmMzWm5QZz09Iiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='24' fill='%23FAF8F5'/%3E%3Ctext x='96' y='118' font-size='80' text-anchor='middle' fill='%23C5A059' font-family='serif'%3E思%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.6/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <script>
 tailwind.config = {
   theme: {
@@ -37,9 +42,6 @@ tailwind.config = {
   }
 }
 </script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 <style>
   [x-cloak] { display: none !important; }
   * { box-sizing: border-box; }
@@ -128,6 +130,13 @@ tailwind.config = {
     background: transparent;
     color: #8B7355;
     cursor: pointer;
+    min-height: 36px;
+  }
+  @media (max-width: 640px) {
+    .cat-tab {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
   }
   .cat-tab.active {
     background: linear-gradient(135deg, #C5A059, #B48F40);
@@ -236,12 +245,46 @@ tailwind.config = {
   /* Card grid */
   .framework-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
   }
   @media (max-width: 640px) {
     .framework-grid {
       grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+
+  /* Mobile responsive overrides */
+  @media (max-width: 640px) {
+    .glass-nav .flex.items-center.justify-between {
+      height: 52px;
+    }
+    .glass-nav h1 {
+      font-size: 1rem;
+    }
+    .glass-nav .tab-btn {
+      padding: 6px 8px;
+      font-size: 0.8rem;
+    }
+    .drawer-panel {
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    .report-area {
+      max-height: 60vh;
+    }
+    .neu-card {
+      padding: 14px;
+    }
+    .framework-grid .neu-card .text-sm {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .framework-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -322,11 +365,11 @@ tailwind.config = {
           </div>
         </div>
         <!-- Settings + Tab Nav -->
-        <div class="flex items-center gap-1">
-          <button @click="currentPage = 'analyze'" class="px-3 py-1.5 text-sm font-medium transition-colors" :class="currentPage === 'analyze' ? 'tab-active' : 'tab-inactive'">分析</button>
-          <button @click="currentPage = 'library'" class="px-3 py-1.5 text-sm font-medium transition-colors" :class="currentPage === 'library' ? 'tab-active' : 'tab-inactive'">框架库</button>
-          <button @click="currentPage = 'history'" class="px-3 py-1.5 text-sm font-medium transition-colors" :class="currentPage === 'history' ? 'tab-active' : 'tab-inactive'">历史</button>
-          <button @click="showSettings = !showSettings" class="ml-2 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gold-pale transition-colors" :class="showSettings ? 'bg-gold-pale' : ''">
+        <div class="flex items-center gap-0.5 sm:gap-1">
+          <button @click="currentPage = 'analyze'" class="tab-btn px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors" :class="currentPage === 'analyze' ? 'tab-active' : 'tab-inactive'">分析</button>
+          <button @click="currentPage = 'library'" class="tab-btn px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors" :class="currentPage === 'library' ? 'tab-active' : 'tab-inactive'">框架库</button>
+          <button @click="currentPage = 'history'" class="tab-btn px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium transition-colors" :class="currentPage === 'history' ? 'tab-active' : 'tab-inactive'">历史</button>
+          <button @click="showSettings = !showSettings" class="ml-1 sm:ml-2 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gold-pale transition-colors" :class="showSettings ? 'bg-gold-pale' : ''">
             <svg class="w-4.5 h-4.5 text-gold-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
           </button>
         </div>
@@ -338,8 +381,12 @@ tailwind.config = {
       <div class="bg-white/70 backdrop-blur rounded-2xl p-4 border border-gold-light/30">
         <label class="block text-xs text-ore-dark font-medium mb-1.5">DeepSeek API Key</label>
         <div class="flex gap-2">
-          <input x-model="apiKey" @blur="saveApiKey()" :type="showApiKey ? 'text' : 'password'" placeholder="sk-..." class="flex-1 neu-input px-3 py-2 text-sm text-ore placeholder-gray-400">
+          <input x-model="apiKey" @input="onApiKeyChange()" :type="showApiKey ? 'text' : 'password'" placeholder="sk-..." class="flex-1 neu-input px-3 py-2 text-sm text-ore placeholder-gray-400">
           <button @click="showApiKey = !showApiKey" class="px-2 text-gold-dark hover:text-gold text-xs">👁</button>
+        </div>
+        <div class="flex items-center gap-2 mt-2">
+          <input type="checkbox" x-model="rememberApiKey" @change="onApiKeyChange()" id="rememberKey" class="rounded border-gold-light">
+          <label for="rememberKey" class="text-xs text-gray-500">记住 API Key（保存到 localStorage，有 XSS 风险时请勿勾选）</label>
         </div>
         <div class="mt-3">
           <label class="block text-xs text-ore-dark font-medium mb-1.5">API 代理地址</label>
@@ -369,16 +416,16 @@ tailwind.config = {
 
           <!-- Mode Toggle -->
           <div class="flex gap-2 mb-5">
-            <button @click="setMode('learning')" class="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all" :class="mode === 'learning' ? 'mode-active' : 'mode-inactive'">📖 学习模式</button>
-            <button @click="setMode('quick')" class="flex-1 py-2.5 rounded-xl text-sm font-medium transition-all" :class="mode === 'quick' ? 'mode-active' : 'mode-inactive'">⚡ 快速分析</button>
+            <button @click="setMode('learning')" class="flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all min-h-[44px]" :class="mode === 'learning' ? 'mode-active' : 'mode-inactive'">📖 学习模式</button>
+            <button @click="setMode('quick')" class="flex-1 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all min-h-[44px]" :class="mode === 'quick' ? 'mode-active' : 'mode-inactive'">⚡ 快速分析</button>
           </div>
 
           <!-- Input Area -->
           <div class="neu-card p-5 mb-5">
-            <textarea x-model="question" rows="4" :disabled="isAnalyzing" placeholder="描述你正在思考问题...&#10;&#10;例如：我该不该从大厂辞职去创业？&#10;例如：为什么团队总是完不成目标？&#10;例如：要不要回老家发展？" class="w-full bg-transparent text-sm leading-relaxed resize-none placeholder-gray-400 text-ore"></textarea>
+            <textarea x-model="question" rows="4" :disabled="isAnalyzing" placeholder="描述你正在思考的问题...&#10;&#10;例如：我该不该从大厂辞职去创业？&#10;例如：为什么团队总是完不成目标？&#10;例如：要不要回老家发展？" class="w-full bg-transparent text-sm leading-relaxed resize-none placeholder-gray-400 text-ore" style="min-height: 100px;"></textarea>
             <div class="flex items-center justify-between mt-3">
               <span class="text-xs text-gray-400" x-text="question.length + ' 字'"></span>
-              <button @click="analyze()" :disabled="isAnalyzing || !isOnline" class="neu-btn px-6 py-2.5 text-sm font-medium">
+              <button @click="analyze()" :disabled="isAnalyzing || !isOnline" class="neu-btn px-4 sm:px-6 py-2.5 text-sm font-medium min-h-[44px]">
                 <span x-show="!isAnalyzing">开始分析</span>
                 <span x-show="isAnalyzing" class="flex items-center gap-1.5">
                   <span class="w-1.5 h-1.5 bg-white rounded-full pulse-gold"></span>
@@ -431,7 +478,7 @@ tailwind.config = {
               <div class="flex items-center justify-between mb-3">
                 <h2 class="font-serif text-base font-bold text-ore">分析报告</h2>
                 <div class="flex items-center gap-3">
-                  <button x-show="streamInterrupted" @click="analyze()" class="text-xs text-gold hover:text-gold-dark font-medium transition-colors">🔄 继续生成</button>
+                  <button x-show="streamInterrupted" @click="analyze()" class="text-xs text-gold hover:text-gold-dark font-medium transition-colors">🔄 重新生成</button>
                   <button @click="copyReport()" class="text-xs text-gold hover:text-gold-dark font-medium transition-colors">📋 复制</button>
                 </div>
               </div>
@@ -448,10 +495,10 @@ tailwind.config = {
         <div class="flex gap-2 mb-4">
           <div class="relative flex-1">
             <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input x-model="librarySearch" placeholder="搜索框架..." class="w-full neu-input pl-11 pr-10 py-3 text-sm placeholder-gray-400 text-ore">
+            <input x-model="librarySearch" placeholder="搜索框架..." class="w-full neu-input pl-11 pr-10 py-2.5 sm:py-3 text-sm placeholder-gray-400 text-ore">
             <button x-show="librarySearch.length > 0" @click="librarySearch = ''" class="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-gold-pale text-gold-dark hover:bg-gold-light transition-colors text-xs" x-cloak>✕</button>
           </div>
-          <button @click="libraryCategory = '全部'" class="shrink-0 px-3 py-3 rounded-xl text-xs font-medium transition-all whitespace-nowrap" :class="libraryCategory === '全部' ? 'cat-tab active' : 'cat-tab'">全部</button>
+          <button @click="libraryCategory = '全部'" class="shrink-0 px-3 py-2.5 sm:py-3 rounded-xl text-xs font-medium transition-all whitespace-nowrap min-h-[44px]" :class="libraryCategory === '全部' ? 'cat-tab active' : 'cat-tab'">全部</button>
         </div>
 
         <!-- Category Filter Tabs (两行) -->
@@ -470,7 +517,7 @@ tailwind.config = {
                 <span class="text-xs px-2 py-0.5 rounded-full whitespace-nowrap shrink-0" :class="'badge-' + fw.category" x-text="fw.category"></span>
               </div>
               <p class="text-xs text-ore-dark leading-relaxed flex-1 mb-4" x-text="fw.summary"></p>
-              <button @click="viewFramework(fw)" class="w-full py-2 rounded-xl text-sm font-medium bg-gold-pale text-gold-dark hover:bg-gold hover:text-white transition-all">查看详情</button>
+              <button @click="viewFramework(fw)" class="w-full py-2.5 rounded-xl text-sm font-medium bg-gold-pale text-gold-dark hover:bg-gold hover:text-white transition-all min-h-[44px]">查看详情</button>
             </div>
           </template>
         </div>
@@ -596,7 +643,7 @@ tailwind.config = {
 
         <!-- Simulated AI Coach Chat -->
         <div class="border-t border-gold-light/20 pt-4">
-          <h3 class="font-semibold text-ore mb-3 text-sm flex items-center gap-1.5">💬 AI 教练对话</h3>
+          <h3 class="font-semibold text-ore mb-3 text-sm flex items-center gap-1.5">💬 AI 教练示例对话 <span class="text-xs font-normal text-gray-400">（预设示例，非实时 AI）</span></h3>
           <div class="bg-sand-deep rounded-2xl p-3">
             <!-- Chat Messages -->
             <div class="chat-scroll space-y-3 max-h-60 overflow-y-auto mb-3" x-ref="chatArea">
@@ -643,7 +690,7 @@ tailwind.config = {
             <span class="text-xs px-2 py-0.5 rounded-full bg-gold-pale text-gold-dark" x-text="tag"></span>
           </template>
         </div>
-        <div class="report-area text-sm leading-relaxed text-ore-dark" x-html="selectedHistory?.reportHtml"></div>
+        <div class="report-area text-sm leading-relaxed text-ore-dark" x-html="renderHistoryReport(selectedHistory)"></div>
       </div>
     </div>
   </div>
@@ -1460,6 +1507,7 @@ function app() {
   return {
     currentPage: 'analyze',
     apiKey: '',
+    rememberApiKey: false,
     apiBaseUrl: 'https://api.deepseek.com',
     showApiKey: false,
     showSettings: false,
@@ -1494,22 +1542,37 @@ function app() {
     chatResponseIndex: 0,
 
     init() {
-      this.apiKey = localStorage.getItem('thinkbridge_api_key') || '';
       const settings = localStorage.getItem('thinkbridge_settings');
       if (settings) {
-        try { const s = JSON.parse(settings); this.mode = s.mode || 'learning'; this.apiBaseUrl = s.apiBaseUrl || 'https://api.deepseek.com'; } catch(e) {}
+        try {
+          const s = JSON.parse(settings);
+          this.mode = s.mode || 'learning';
+          this.apiBaseUrl = s.apiBaseUrl || 'https://api.deepseek.com';
+          this.rememberApiKey = s.rememberApiKey || false;
+        } catch(e) {}
+      }
+      // API Key: 只在用户勾选"记住"时从 localStorage 读取
+      if (this.rememberApiKey) {
+        this.apiKey = localStorage.getItem('thinkbridge_api_key') || '';
+      } else {
+        localStorage.removeItem('thinkbridge_api_key');
       }
       this.loadHistory();
       window.addEventListener('online', () => { this.isOnline = true; });
       window.addEventListener('offline', () => { this.isOnline = false; });
     },
 
-    saveApiKey() {
-      try { localStorage.setItem('thinkbridge_api_key', this.apiKey); } catch(e) {}
+    onApiKeyChange() {
+      if (this.rememberApiKey) {
+        try { localStorage.setItem('thinkbridge_api_key', this.apiKey); } catch(e) {}
+      } else {
+        localStorage.removeItem('thinkbridge_api_key');
+      }
+      this.saveSettings();
     },
 
     saveSettings() {
-      try { localStorage.setItem('thinkbridge_settings', JSON.stringify({ mode: this.mode, apiBaseUrl: this.apiBaseUrl })); } catch(e) {}
+      try { localStorage.setItem('thinkbridge_settings', JSON.stringify({ mode: this.mode, apiBaseUrl: this.apiBaseUrl, rememberApiKey: this.rememberApiKey })); } catch(e) {}
     },
 
     setMode(m) {
@@ -1659,10 +1722,12 @@ function app() {
     },
 
     parseRouterJSON(text) {
+      // Level 1: 直接解析
       try {
         return JSON.parse(text);
       } catch(e) {}
 
+      // Level 2: 提取代码块
       try {
         const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
         if (codeBlockMatch) {
@@ -1670,16 +1735,22 @@ function app() {
         }
       } catch(e) {}
 
+      // Level 3: 修复重试（跳过贪婪正则，直接尝试修复常见问题）
       try {
-        const braceMatch = text.match(/\{[\s\S]*\}/);
-        if (braceMatch) {
-          return JSON.parse(braceMatch[0]);
+        let fixed = text.trim();
+        // 去掉前后非 JSON 字符
+        const firstBrace = fixed.indexOf('{');
+        const lastBrace = fixed.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace > firstBrace) {
+          fixed = fixed.substring(firstBrace, lastBrace + 1);
+          return JSON.parse(fixed);
         }
       } catch(e) {}
 
+      // Level 4: 降级默认框架
       const questionLower = this.question.toLowerCase();
       let problemType = 'decision';
-      if (/为什么|原因|怎么回事|为什么/.test(questionLower)) problemType = 'root-cause';
+      if (/为什么|原因|怎么回事/.test(questionLower)) problemType = 'root-cause';
       else if (/未来|趋势|会怎样|前景/.test(questionLower)) problemType = 'future';
       else if (/怎么做|方案|步骤|计划/.test(questionLower)) problemType = 'action-plan';
       else if (/关系|沟通|同事|领导|朋友|家人/.test(questionLower)) problemType = 'interpersonal';
@@ -1753,11 +1824,18 @@ function app() {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let accumulated = '';
-      let renderTimer = null;
+      let sseBuffer = '';
 
-      const renderReport = () => {
+      // 流式过程中用纯文本显示，避免不完整 Markdown 导致跳变
+      const renderStreaming = () => {
+        this.reportHtml = '<pre style="white-space:pre-wrap;word-break:break-word;font-family:inherit;margin:0;padding:0;background:none;border:none;">' + accumulated.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre>';
+      };
+
+      // 流结束后一次性 Markdown 渲染
+      const renderFinal = () => {
         try {
-          this.reportHtml = marked.parse(accumulated);
+          const raw = marked.parse(accumulated);
+          this.reportHtml = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(raw) : raw;
         } catch(e) {
           this.reportHtml = accumulated.replace(/\n/g, '<br>');
         }
@@ -1768,8 +1846,9 @@ function app() {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\n');
+          sseBuffer += decoder.decode(value, { stream: true });
+          const lines = sseBuffer.split('\n');
+          sseBuffer = lines.pop() || '';
 
           for (const line of lines) {
             if (line.startsWith('data: ')) {
@@ -1781,15 +1860,24 @@ function app() {
                 if (content) {
                   accumulated += content;
                   this.report = accumulated;
-                  if (!renderTimer) {
-                    renderTimer = setTimeout(() => {
-                      renderReport();
-                      renderTimer = null;
-                    }, 150);
-                  }
+                  renderStreaming();
                 }
               } catch(e) {}
             }
+          }
+        }
+        // 处理 buffer 中剩余内容
+        if (sseBuffer.startsWith('data: ')) {
+          const data = sseBuffer.slice(6).trim();
+          if (data && data !== '[DONE]') {
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices?.[0]?.delta?.content || '';
+              if (content) {
+                accumulated += content;
+                this.report = accumulated;
+              }
+            } catch(e) {}
           }
         }
       } catch(e) {
@@ -1799,8 +1887,8 @@ function app() {
         }
       }
 
-      if (renderTimer) clearTimeout(renderTimer);
-      renderReport();
+      // 流结束，最终 Markdown 渲染
+      renderFinal();
 
       if (this.report) {
         await this.saveToHistory();
@@ -1908,12 +1996,15 @@ function app() {
 
       const item = {
         id: Date.now().toString(),
+        createdAt: new Date().toISOString(),
         date: new Date().toLocaleString('zh-CN'),
         question: this.question,
         frameworks: frameworkNames,
         report: this.report,
-        reportHtml: this.reportHtml,
-        mode: this.mode
+        mode: this.mode,
+        diagnosis: this.diagnosis,
+        feedback: null,
+        user_tried_first: false
       };
 
       this.history.unshift(item);
@@ -1965,6 +2056,16 @@ function app() {
       this.showHistoryDetail = true;
     },
 
+    renderHistoryReport(item) {
+      if (!item || !item.report) return '';
+      try {
+        const raw = marked.parse(item.report);
+        return typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(raw) : raw;
+      } catch(e) {
+        return (item.report || '').replace(/\n/g, '<br>');
+      }
+    },
+
     copyReport() {
       const text = this.report;
       this.copyText(text);
@@ -2013,63 +2114,11 @@ function app() {
 
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE_NAME = 'thinkbridge-v1';
-    const CDN_CACHE = 'thinkbridge-cdn-v1';
-    const CDN_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.tailwindcss.com', 'cdn.jsdelivr.net'];
-
-    self.addEventListener('install', e => {
-      self.skipWaiting();
-    });
-
-    self.addEventListener('activate', e => {
-      e.waitUntil(
-        caches.keys().then(keys =>
-          Promise.all(keys.filter(k => k !== CACHE_NAME && k !== CDN_CACHE).map(k => caches.delete(k)))
-        )
-      );
-      self.clients.claim();
-    });
-
-    self.addEventListener('fetch', e => {
-      const url = new URL(e.request.url);
-
-      if (CDN_HOSTS.some(h => url.hostname.includes(h))) {
-        e.respondWith(
-          caches.open(CDN_CACHE).then(cache =>
-            cache.match(e.request).then(cached => {
-              if (cached) return cached;
-              return fetch(e.request).then(response => {
-                if (response.ok) cache.put(e.request, response.clone());
-                return response;
-              });
-            })
-          )
-        );
-        return;
-      }
-
-      if (e.request.mode === 'navigate' || (e.request.method === 'GET' && url.pathname.endsWith('.html'))) {
-        e.respondWith(
-          fetch(e.request).catch(() => caches.match(e.request).then(r => r || caches.match('/')))
-        );
-        return;
-      }
-
-      e.respondWith(
-        fetch(e.request).then(response => {
-          if (response.ok) {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-          }
-          return response;
-        }).catch(() => caches.match(e.request))
-      );
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(() => {});
+  navigator.serviceWorker.register('/sw.js').then(reg => {
+    console.log('SW registered:', reg.scope);
+  }).catch(err => {
+    console.warn('SW registration failed:', err);
+  });
 }
 </script>
 </body>
